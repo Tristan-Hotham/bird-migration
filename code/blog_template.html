@@ -1,0 +1,138 @@
+<!-- wp:paragraph -->
+<p><em>I followed {{total.animals|int}} tagged birds across three continents: young white storks from eight countries, North American ospreys, Baltic cuckoos and Belgian marsh harriers. Storks will not cross the sea. Ospreys and cuckoos do it without a second thought.</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://maps.tristanhotham.com/bird-migration/">Explore the interactive version</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://doi.org/10.5281/zenodo.24043676">Read the paper</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:paragraph -->
+<p>Every autumn white storks leave the rooftops of Europe for Africa, and they do it in a peculiar way. They are big, heavy birds that hardly flap: they climb in rising warm air, circling, and glide to the next thermal. Thermals do not form over the sea, so storks go round it. That one fact shapes their whole map.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since the 1990s, birds have carried tags that report where they are by satellite or GPS, and some of that data is published for anyone to use. I took four such data sets, all released into the public domain: {{stork.n|int}} young storks tagged in their nests in 2013 by a team led by Andrea Flack, {{osprey.n|int}} ospreys tracked across the Americas by Mark Martell and colleagues between 1995 and 2002, {{cuckoo.n|int}} cuckoos from a Baltic experiment, and {{harrier.n|int}} marsh harriers from the marshes near Antwerp. I cleaned them all the same way and drew them on one hand-inked map, with a little pen-drawn bird for each, so you can press play and watch a year of migration.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_flyways.png|Four hand-inked maps on parchment. Top left, white storks: red lines fan from Europe through Gibraltar and through Turkey and the Levant to the Sahel, with pen-drawn storks on the lines. Top right, ospreys: blue lines from the eastern United States through Florida, Cuba and the Caribbean to South America. Bottom left, cuckoos: green lines from the Baltic and from Kazan straight across the Mediterranean and the Sahara. Bottom right, marsh harriers: brown lines from Belgium down the Atlantic coast to Senegal and Guinea|The four species, each with its winter quarters hatched.}}
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Two roads to Africa</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The young storks split along a line through central Europe. Of the {{stork.west_left|int}} from Germany and Spain that left home, {{stork.west_gib|int}} crossed the Strait of Gibraltar, fourteen kilometres of water, into Morocco. Of the {{stork.east_left|int}} from Poland, Greece and Moscow that left, {{stork.east_straits|int}} crossed the Bosporus or the Dardanelles and {{stork.east_levant|int}} flew down the narrow land bridge of Israel and Sinai into Africa. Not one bird used the other side's crossing. The Tunisian storks simply set off across the Sahara, the Armenian ones went south into Iraq and Iran, and the young storks of Uzbekistan did not migrate at all.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_storks.png|A hand-inked map of Europe and Africa with the tracks of young storks coloured by population. Red and orange lines from Germany and Spain pass through the Strait of Gibraltar and spread over West Africa; blue, green and brown lines from Greece, Poland and Moscow squeeze through Turkey and the Levant and run down the Nile to Sudan, Ethiopia and southern Africa. Red pen chevrons mark the three funnels, labelled 13, 21 and 20 storks|The young storks by population, with the three funnels.}}
+
+<!-- wp:paragraph -->
+<p>Most spent the winter in the Sahel, the dry savanna south of the Sahara: {{stork.regions.Sahel|int}} of the {{stork.wintered|int}} that had a winter position. {{stork.south_of_equator|int}} crossed the equator, and one young stork from Moscow ended up {{stork.far_km|int}} km from its nest, in Zimbabwe.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:pullquote -->
+<figure class="wp-block-pullquote"><blockquote><p>The storks flew {{sp.stork.flown_km|int}} km between them and only {{sp.stork.sea_km|int}} km of it was over open water.</p></blockquote></figure>
+<!-- /wp:pullquote -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Around the sea or across it</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I measured how much of each species' flying was over the sea. The storks: {{sp.stork.sea_pct|f1}}%, short hops over bays and straits, never more than {{sp.stork.longest_sea_km|int}} km at a stretch. The ospreys: {{sp.osprey.sea_pct|int}}%. They fish, they flap, and {{osprey.carib_n|int}} of them flew 300 km or more of open sea in one go, typically from Cuba or Hispaniola straight over the Caribbean to Venezuela or Colombia. One, known only as KD, set off south from Hispaniola, spent {{osprey.longest_h|int}} hours over the sea and came back to Haiti. The cuckoos fly at night and their tags report only every day or two, but the lines are unmistakable: one young cuckoo left Poland on 27 September 2017 and was in Chad {{cuckoo.fast.0.days|f1}} days later, {{cuckoo.fast.0.km|int}} km away, having crossed the sea and the whole Sahara in between.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_sea.png|Horizontal bar chart of the share of distance flown over the open sea: white stork 0.61%, osprey 22%, common cuckoo 5.4%, western marsh harrier 3.7%|Share of each species' flying over the open sea.}}
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How fast, how far</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A typical stork took {{migr.stork_autumn.days|int}} days over its autumn migration, {{migr.stork_autumn.km_per_day|int}} km a day once the rest days are counted in. Ospreys went {{compare.osprey_vs_stork_speed|f1}} times as fast. On their best days they all go much further. The record in these data belongs to a marsh harrier called Lilla, who on 11 September 2019 left central Spain at midday, crossed the Strait of Gibraltar in the evening, flew on into the night, and by noon the next day was {{sp.harrier.max_day_km|int}} km away in Morocco.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_speed.png|Dot plot of migration speeds in km a day: storks between 18 and 256, most below 120; ospreys between 47 and 350; marsh harriers between 58 and 144; no well-covered cuckoo migrations|Speed of each migration, autumn (filled) and spring (open).}}
+
+<!-- wp:paragraph -->
+<p>Over a year the totals are astonishing for birds a few months old. The median stork followed for a full year covered {{sp.stork.median_full_year_km|int}} km between daily positions, and one from Moscow at least {{sp.stork.best_year_km|int}} km. Those are lower bounds: measured hour by hour, the stork tracks are {{stork.hourly_vs_daily_pct|int}}% longer.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The same bush every winter</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The marsh harriers were followed for years, and they show something the short tracks cannot. Lilla made {{harrier.birds.Lilla.n_migr|int}} complete migrations between Antwerp and Senegal, and each winter she went back to the same place near Dakar: her winter centres in three winters lie within {{harrier.lilla_max_shift|f1}} km of each other. Lillo, a male from the same marsh, wintered twice in Guinea, {{harrier.birds.Lillo.winter_shift_km.0|f1}} km apart.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_harriers.png|A hand-inked map from Belgium to West Africa with two marsh harriers' migrations: red autumn and blue spring lines run down through France and Spain, across Gibraltar and along the Atlantic coast of Morocco and Mauritania to Senegal and Guinea, the lines lying almost on top of each other year after year|Two marsh harriers, five autumns and three springs.}}
+
+<!-- wp:paragraph -->
+<p>The young storks spread out more. {{stork.regions.Sahel|int}} wintered in the Sahel, but they ranged from Morocco and France to South Africa.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_winter.png|Dot chart of the winter latitude of each young stork by population: German storks split between Morocco and the Sahel, Tunisian and Russian storks mostly in the Sahel between 8 and 16 degrees north, a few Greek, Polish and Russian storks far south in Tanzania, Zambia, Zimbabwe and South Africa, Armenian storks in Iraq and Iran|Where the young storks spent the winter, by population.}}
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The cost of the journey</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Of the {{stork.n|int}} young storks, {{stork.dead|int}} ({{stork.dead_pct|int}}%) were found dead within the year. Many never got going: {{stork.dead_before_leaving|int}} died before they had gone 300 km from home. After that the route mattered. Of the storks that left, {{stork.leave_east_dead|int}} of {{stork.leave_east_n|int}} on the long eastern route died, {{stork.leave_west_dead|int}} of {{stork.leave_west_n|int}} on the western one, and {{stork.leave_tunisia_dead|int}} of the {{stork.leave_tunisia_n|int}} Tunisian birds that set out across the Sahara. The ospreys' records are grim in a different way: {{osprey.debris|int}} probably came down at sea and died on floating debris, and one was shot in Mexico.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_fates.png|Stacked bar chart of young storks by population, divided into died before leaving home (black), died after leaving (red) and not known dead (tan). Germany 6 of 13 dead, Tunisia 7 of 9, Armenia 5 of 8, Uzbekistan 4 of 6, Russia 1 of 10|The cost of the first year, by population.}}
+
+<!-- wp:paragraph -->
+<p>The cuckoos come from an experiment. Young cuckoos are raised by other birds and never meet their parents, so how do they find Africa? Kasper Thorup and colleagues caught cuckoos on the Baltic coast and released some at home and others after carrying them about {{cuckoo.displace_km|int}} km east to Kazan. {{cuckoo.disp_sw|int}} of the {{cuckoo.disp_heading_n|int}} displaced birds I could follow set off south-west, as if correcting for the move.</p>
+<!-- /wp:paragraph -->
+
+{{IMG|b_cuckoos.png|A hand-inked map from the Baltic to southern Africa with green lines from Rybachy on the Baltic and red lines from Kazan in Russia, many running straight across the Mediterranean and the Sahara|Cuckoos released at home (green) and after being carried to Kazan (red).}}
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How I did this</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The four data sets come from the Movebank Data Repository and Zenodo, all under CC0. I kept only the most accurate satellite positions, removed positions that would need impossible speeds, thinned every bird to one position a day, and measured distances as straight lines between positions, so every distance here is a lower bound. Funnels count a bird when it has positions on both sides, and the sea is Natural Earth's coastline. These are a few hundred birds, mostly young storks of one year and ospreys of the late 1990s, so they describe these birds rather than whole populations, and a tag that stops is not a dead bird: I count only deaths the researchers confirmed. The paper has the details.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://maps.tristanhotham.com/bird-migration/">Explore the interactive version</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://doi.org/10.5281/zenodo.24043676">Read the paper</a></div>
+<!-- /wp:button -->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://github.com/Tristan-Hotham/bird-migration">Data and code</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Notes and sources</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Flack et al. (2015), <a href="https://doi.org/10.5441/001/1.78152p3q">MPIO white stork lifetime tracking data (2013 to 2014)</a>, Movebank Data Repository, CC0; and Flack et al. (2016), <a href="https://doi.org/10.1126/sciadv.1500931">Costs of migratory decisions</a>, Science Advances.</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Martell and Douglas (2019), <a href="https://doi.org/10.5441/001/1.sv6335t3">Osprey in North and South America 1995 to 2002</a>, Movebank Data Repository, CC0.</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Thorup et al. (2020), <a href="https://doi.org/10.5441/001/1.vk36vq82">Common cuckoos from Rybachy</a>, Movebank Data Repository, CC0; and <a href="https://doi.org/10.1038/s41598-020-64230-x">Flying on their own wings</a>, Scientific Reports.</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>INBO, <a href="https://doi.org/10.5281/zenodo.8238402">MH_ANTWERPEN western marsh harriers</a>, Zenodo, CC0. <a href="https://www.naturalearthdata.com/">Natural Earth</a> (public domain). Lettering in IM Fell (SIL Open Font License).</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->

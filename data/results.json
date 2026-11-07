@@ -1,0 +1,763 @@
+{
+ "data": {
+  "stork": {
+   "animals": 72,
+   "raw_rows": 1584192,
+   "clean_fixes": 181005,
+   "daily": 12207,
+   "first_year": 2012,
+   "last_year": 2014,
+   "doi": "10.5441/001/1.78152p3q",
+   "raw_fixes": 1584192
+  },
+  "osprey": {
+   "animals": 111,
+   "raw_rows": 86383,
+   "clean_fixes": 16476,
+   "daily": 9970,
+   "first_year": 1995,
+   "last_year": 2002,
+   "doi": "10.5441/001/1.sv6335t3",
+   "good_class_rows": 16490,
+   "good_class_pct": 19.1
+  },
+  "cuckoo": {
+   "animals": 42,
+   "raw_rows": 8498,
+   "clean_fixes": 2916,
+   "daily": 1245,
+   "first_year": 2015,
+   "last_year": 2020,
+   "doi": "10.5441/001/1.vk36vq82",
+   "good_class_rows": 2807
+  },
+  "harrier": {
+   "animals": 3,
+   "raw_rows": 393122,
+   "clean_fixes": 42733,
+   "daily": 1814,
+   "first_year": 2018,
+   "last_year": 2022,
+   "doi": "10.5281/zenodo.8238402",
+   "raw_fixes": 393122
+  }
+ },
+ "total": {
+  "animals": 228,
+  "daily": 25236,
+  "raw_rows": 2072195,
+  "path_km": 1414888
+ },
+ "migr": {
+  "stork_autumn": {
+   "n_all": 29,
+   "n": 17,
+   "path_km": 4829.3,
+   "straight_km": 3298.5,
+   "days": 61.0,
+   "km_per_day": 79.4,
+   "travel_days": 16.0,
+   "detour_pct": 18.4,
+   "fastest_km_per_day": 256.3
+  },
+  "stork_spring": {
+   "n_all": 14,
+   "n": 12,
+   "path_km": 3977.6,
+   "straight_km": 3113.6,
+   "days": 52.5,
+   "km_per_day": 76.3,
+   "travel_days": 18.5,
+   "detour_pct": 20.3,
+   "fastest_km_per_day": 115.4
+  },
+  "osprey_autumn": {
+   "n_all": 26,
+   "n": 22,
+   "path_km": 5300.6,
+   "straight_km": 3975.2,
+   "days": 23.5,
+   "km_per_day": 169.6,
+   "travel_days": 6.5,
+   "detour_pct": 23.0,
+   "fastest_km_per_day": 350.0
+  },
+  "osprey_spring": {
+   "n_all": 16,
+   "n": 8,
+   "path_km": 4976.6,
+   "straight_km": 3785.5,
+   "days": 23.0,
+   "km_per_day": 236.7,
+   "travel_days": 3.0,
+   "detour_pct": 21.9,
+   "fastest_km_per_day": 267.2
+  },
+  "cuckoo_autumn": {
+   "n_all": 4,
+   "n": 0,
+   "path_km": null,
+   "straight_km": null,
+   "days": null,
+   "km_per_day": null,
+   "travel_days": null,
+   "detour_pct": null,
+   "fastest_km_per_day": null
+  },
+  "cuckoo_spring": {
+   "n_all": 1,
+   "n": 0,
+   "path_km": null,
+   "straight_km": null,
+   "days": null,
+   "km_per_day": null,
+   "travel_days": null,
+   "detour_pct": null,
+   "fastest_km_per_day": null
+  },
+  "harrier_autumn": {
+   "n_all": 5,
+   "n": 5,
+   "path_km": 4639.2,
+   "straight_km": 4492.5,
+   "days": 51.0,
+   "km_per_day": 88.8,
+   "travel_days": 19.0,
+   "detour_pct": 3.3,
+   "fastest_km_per_day": 143.5
+  },
+  "harrier_spring": {
+   "n_all": 3,
+   "n": 3,
+   "path_km": 4718.7,
+   "straight_km": 4491.3,
+   "days": 36.0,
+   "km_per_day": 134.8,
+   "travel_days": 22.0,
+   "detour_pct": 5.1,
+   "fastest_km_per_day": 141.0
+  }
+ },
+ "sp": {
+  "stork": {
+   "name": "White stork",
+   "latin": "Ciconia ciconia",
+   "n": 72,
+   "max_day_km": 558.0,
+   "max_day_animal": "DER AR436",
+   "n_full_year": 17,
+   "best_year_km": 23680.3,
+   "best_year_animal": "DER AR445",
+   "best_year_animal_hourly_total_km": 31179.6,
+   "best_year_animal_span": 366,
+   "median_full_year_km": 12723.8,
+   "sea_pct": 0.61,
+   "sea_km": 2360.5,
+   "flown_km": 389086.4,
+   "longest_sea_km": 82.1,
+   "longest_sea_animal": "DER AP802",
+   "longest_sea_date": "2013-08-10",
+   "n_cross_100": 0,
+   "n_cross_300": 0,
+   "max_gap_h": 1,
+   "dead": 30,
+   "median_best_day_km": 370.9
+  },
+  "osprey": {
+   "name": "Osprey",
+   "latin": "Pandion haliaetus",
+   "n": 111,
+   "max_day_km": 729.8,
+   "max_day_animal": "8-5",
+   "n_full_year": 5,
+   "best_year_km": 18510.1,
+   "best_year_animal": "HX",
+   "best_year_animal_hourly_total_km": null,
+   "best_year_animal_span": 586,
+   "median_full_year_km": 12115.3,
+   "sea_pct": 22.02,
+   "sea_km": 24266.2,
+   "flown_km": 110179.9,
+   "longest_sea_km": 858.7,
+   "longest_sea_animal": "KD",
+   "longest_sea_date": "2001-09-29",
+   "n_cross_100": 12,
+   "n_cross_300": 4,
+   "max_gap_h": 24,
+   "dead": 8
+  },
+  "cuckoo": {
+   "name": "Common cuckoo",
+   "latin": "Cuculus canorus",
+   "n": 42,
+   "max_day_km": 50.5,
+   "max_day_animal": "PB143156",
+   "n_full_year": 0,
+   "best_year_km": null,
+   "best_year_animal": null,
+   "best_year_animal_hourly_total_km": null,
+   "best_year_animal_span": null,
+   "median_full_year_km": null,
+   "sea_pct": 5.41,
+   "sea_km": 3087.1,
+   "flown_km": 57090.1,
+   "longest_sea_km": 1026.7,
+   "longest_sea_animal": "PB143382",
+   "longest_sea_date": "2017-09-27",
+   "n_cross_100": 9,
+   "n_cross_300": 6,
+   "max_gap_h": 72,
+   "dead": 0
+  },
+  "harrier": {
+   "name": "Western marsh harrier",
+   "latin": "Circus aeruginosus",
+   "n": 3,
+   "max_day_km": 871.1,
+   "max_day_animal": "H197169",
+   "n_full_year": 2,
+   "best_year_km": 12246.6,
+   "best_year_animal": "L177801",
+   "best_year_animal_hourly_total_km": 33719.9,
+   "best_year_animal_span": 698,
+   "median_full_year_km": 12222.2,
+   "sea_pct": 3.73,
+   "sea_km": 3568.6,
+   "flown_km": 95566.7,
+   "longest_sea_km": 122.6,
+   "longest_sea_animal": "H197169",
+   "longest_sea_date": "2022-04-11",
+   "n_cross_100": 2,
+   "n_cross_300": 0,
+   "max_gap_h": 1,
+   "dead": 0
+  }
+ },
+ "stork": {
+  "n": 72,
+  "n_pops": 8,
+  "pops": {
+   "SW Germany": {
+    "n": 13,
+    "dead": 6,
+    "left": 9,
+    "gib": 6,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 7,
+    "winter_lat": 34.3,
+    "max_from_tag_km": 4450.7,
+    "median_max_from_tag_km": 1769.7,
+    "tag_lon": 8.9,
+    "tag_lat": 47.8,
+    "regions": {
+     "Europe and Morocco": 5,
+     "Sahel": 2
+    }
+   },
+   "Spain (Doñana)": {
+    "n": 11,
+    "dead": 4,
+    "left": 9,
+    "gib": 7,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 2,
+    "winter_lat": 15.4,
+    "max_from_tag_km": 3536.0,
+    "median_max_from_tag_km": 2514.5,
+    "tag_lon": -6.0,
+    "tag_lat": 37.4,
+    "regions": {
+     "Sahel": 2
+    }
+   },
+   "Tunisia": {
+    "n": 9,
+    "dead": 7,
+    "left": 7,
+    "gib": 0,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 4,
+    "winter_lat": 12.2,
+    "max_from_tag_km": 3501.4,
+    "median_max_from_tag_km": 2861.9,
+    "tag_lon": 10.3,
+    "tag_lat": 36.8,
+    "regions": {
+     "Sahel": 4
+    }
+   },
+   "Poland": {
+    "n": 4,
+    "dead": 1,
+    "left": 4,
+    "gib": 0,
+    "straits": 3,
+    "levant": 3,
+    "wintered": 2,
+    "winter_lat": -0.9,
+    "max_from_tag_km": 8884.2,
+    "median_max_from_tag_km": 6258.1,
+    "tag_lon": 15.5,
+    "tag_lat": 51.9,
+    "regions": {
+     "East and southern Africa": 1,
+     "Sahel": 1
+    }
+   },
+   "Greece (Evros Delta)": {
+    "n": 10,
+    "dead": 2,
+    "left": 9,
+    "gib": 0,
+    "straits": 9,
+    "levant": 8,
+    "wintered": 5,
+    "winter_lat": 10.7,
+    "max_from_tag_km": 7212.5,
+    "median_max_from_tag_km": 3321.3,
+    "tag_lon": 26.2,
+    "tag_lat": 40.9,
+    "regions": {
+     "Sahel": 3,
+     "East and southern Africa": 2
+    }
+   },
+   "Russia (Moscow)": {
+    "n": 10,
+    "dead": 1,
+    "left": 10,
+    "gib": 0,
+    "straits": 9,
+    "levant": 9,
+    "wintered": 7,
+    "winter_lat": 11.0,
+    "max_from_tag_km": 9185.8,
+    "median_max_from_tag_km": 5322.2,
+    "tag_lon": 37.4,
+    "tag_lat": 55.6,
+    "regions": {
+     "Sahel": 6,
+     "East and southern Africa": 1
+    }
+   },
+   "Armenia": {
+    "n": 8,
+    "dead": 5,
+    "left": 4,
+    "gib": 0,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 5,
+    "winter_lat": 33.1,
+    "max_from_tag_km": 1133.9,
+    "median_max_from_tag_km": 385.4,
+    "tag_lon": 44.5,
+    "tag_lat": 40.2,
+    "regions": {
+     "Middle East and Asia": 5
+    }
+   },
+   "Uzbekistan": {
+    "n": 6,
+    "dead": 4,
+    "left": 0,
+    "gib": 0,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 1,
+    "winter_lat": 40.4,
+    "max_from_tag_km": 141.1,
+    "median_max_from_tag_km": 77.2,
+    "tag_lon": 69.0,
+    "tag_lat": 41.0,
+    "regions": {
+     "Middle East and Asia": 1
+    }
+   },
+   "South Africa": {
+    "n": 1,
+    "dead": 0,
+    "left": 1,
+    "gib": 0,
+    "straits": 0,
+    "levant": 0,
+    "wintered": 1,
+    "winter_lat": -33.8,
+    "max_from_tag_km": 2246.3,
+    "median_max_from_tag_km": 2246.3,
+    "tag_lon": 18.8,
+    "tag_lat": -33.8,
+    "regions": {
+     "East and southern Africa": 1
+    }
+   }
+  },
+  "dead": 30,
+  "dead_pct": 42,
+  "left": 53,
+  "west_left": 18,
+  "west_gib": 13,
+  "west_stayed_europe": 5,
+  "west_morocco": 4,
+  "west_france": 1,
+  "east_left": 23,
+  "east_straits": 21,
+  "east_levant": 20,
+  "gib_total": 13,
+  "straits_total": 21,
+  "levant_total": 20,
+  "tunisia_sahara": 7,
+  "wintered": 34,
+  "regions": {
+   "Sahel": 18,
+   "Middle East and Asia": 6,
+   "East and southern Africa": 5,
+   "Europe and Morocco": 5
+  },
+  "south_of_equator": 5,
+  "far_animal": "DER AR445",
+  "far_pop": "Russia (Moscow)",
+  "far_km": 9185.8,
+  "far_country": "Zimbabwe",
+  "uzbek_max_km": 141.1,
+  "armenia_left": 4,
+  "dead_by_flyway": {
+   "did not leave": 16,
+   "central (Sahara)": 5,
+   "western": 3,
+   "Middle East": 2,
+   "eastern, before the straits": 2,
+   "western, stayed in Europe": 1,
+   "eastern": 1
+  },
+  "dead_before_leaving": 16,
+  "dead_in_africa": 11,
+  "transmitting_end": 15,
+  "last_day": "2014-07-16",
+  "hourly_vs_daily_pct": 41,
+  "dead_by_1oct": 15,
+  "dead_by_1oct_pct": 50,
+  "winter_n": 34,
+  "leave_west_n": 18,
+  "leave_west_dead": 4,
+  "leave_west_dead_pct": 22,
+  "leave_east_n": 23,
+  "leave_east_dead": 3,
+  "leave_east_dead_pct": 13,
+  "leave_tunisia_n": 7,
+  "leave_tunisia_dead": 5,
+  "leave_tunisia_dead_pct": 71
+ },
+ "osprey": {
+  "n": 111,
+  "pops": {
+   "East": 58,
+   "Midwest": 32,
+   "West": 21
+  },
+  "n_south": 65,
+  "south_countries": {
+   "Brazil": 14,
+   "Mexico": 13,
+   "Venezuela": 8,
+   "Colombia": 7,
+   "Bolivia": 4,
+   "Peru": 4,
+   "Panama": 4,
+   "Cuba": 3,
+   "Nicaragua": 2,
+   "Honduras": 1,
+   "Haiti": 1,
+   "French Guiana": 1,
+   "Dominican Republic": 1,
+   "Costa Rica": 1,
+   "El Salvador": 1
+  },
+  "n_south_america": 38,
+  "dead": 8,
+  "fates": [
+   {
+    "animal": "AX",
+    "note": "11/20/1999: recovered dead in Cuba  (may have died much earlier)",
+    "last_day": "1998-09-13",
+    "country": "Cuba"
+   },
+   {
+    "animal": "FR",
+    "note": "animal likely died on floating debris in the Gulf of Mexico",
+    "last_day": "2001-10-01",
+    "country": "Mexico"
+   },
+   {
+    "animal": "HU",
+    "note": "animal likely died on floating debris in the Carribbean Sea based on activity data",
+    "last_day": "2000-09-23",
+    "country": "Haiti"
+   },
+   {
+    "animal": "X2",
+    "note": "electrocuted at utility pole 4/27/2016 still carrying PTT and at least 22.83 y old",
+    "last_day": "1998-04-12",
+    "country": "United States"
+   },
+   {
+    "animal": "X3",
+    "note": "May 2016 found dead (with PTT still attached) near old nest site",
+    "last_day": "1997-08-09",
+    "country": "United States"
+   },
+   {
+    "animal": "Z3",
+    "note": "7/23/1998 - found dead near 1997 nest",
+    "last_day": "1997-06-18",
+    "country": "United States"
+   },
+   {
+    "animal": "Z7",
+    "note": "10/1/1997 shot at Tampahula, Mexico",
+    "last_day": "1997-10-02",
+    "country": "Mexico"
+   },
+   {
+    "animal": "os_245",
+    "note": "animal likely died on floating debris in the Gulf of Mexico based on activity data",
+    "last_day": "2002-03-13",
+    "country": "United States"
+   }
+  ],
+  "debris": 3,
+  "cuba": 20,
+  "east_cuba": 17,
+  "east_n": 58,
+  "midwest_n": 32,
+  "west_n": 21,
+  "west_south_lat": 18.7,
+  "east_south_lat": 4.0,
+  "mexico_by_pop": {
+   "West": 9,
+   "Midwest": 4
+  },
+  "carib_n": 4,
+  "carib_median_km": 727.8,
+  "carib_median_h": 38.5,
+  "longest_animal": "KD",
+  "longest_km": 858.7,
+  "longest_h": 82.2
+ },
+ "cuckoo": {
+  "n": 42,
+  "displace_km": 1800,
+  "control": 23,
+  "displaced": 19,
+  "control_juv": 9,
+  "displaced_juv": 15,
+  "control_africa": 9,
+  "displaced_africa": 2,
+  "control_span": 53.0,
+  "displaced_span": 26.0,
+  "africa": 11,
+  "south_equator": 5,
+  "fast": [
+   {
+    "animal": "PB143382",
+    "km": 4347.2,
+    "days": 4.8,
+    "kmd": 897.3,
+    "from": "Poland",
+    "to": "Chad",
+    "date": "2017-09-27",
+    "lat0": 50.5,
+    "lat1": 11.5
+   },
+   {
+    "animal": "PB143227",
+    "km": 3063.3,
+    "days": 4.5,
+    "kmd": 682.1,
+    "from": "Greece",
+    "to": "Sudan",
+    "date": "2015-10-25",
+    "lat0": 40.3,
+    "lat1": 12.9
+   },
+   {
+    "animal": "PB112877",
+    "km": 2919.2,
+    "days": 3.0,
+    "kmd": 976.7,
+    "from": "Greece",
+    "to": "Chad",
+    "date": "2019-08-30",
+    "lat0": 41.0,
+    "lat1": 14.9
+   }
+  ],
+  "n_cross_med": 4,
+  "longest_sea_km": 1026.7,
+  "longest_sea_animal": "PB143382",
+  "winter_n": 4,
+  "disp_heading_n": 9,
+  "disp_heading_med": 200.9,
+  "disp_sw": 8,
+  "ctrl_heading_n": 14,
+  "ctrl_heading_med": 176.5
+ },
+ "harrier": {
+  "n": 3,
+  "birds": {
+   "Zuzanna": {
+    "animal": "H171693",
+    "sex": "f",
+    "first_day": "2018-07-18",
+    "last_day": "2018-07-27",
+    "years": 0.0,
+    "path_daily": 7.7,
+    "path_hourly": 90.5,
+    "winters": [],
+    "winter_shift_km": [],
+    "n_migr": 0,
+    "autumn_days": [],
+    "spring_days": [],
+    "max_day_km": 2.1,
+    "best_year_km": null,
+    "migr_km": []
+   },
+   "Lilla": {
+    "animal": "H197169",
+    "sex": "f",
+    "first_day": "2019-04-18",
+    "last_day": "2022-05-02",
+    "years": 3.0,
+    "path_daily": 32020.4,
+    "path_hourly": 43062.9,
+    "winters": [
+     {
+      "year": 2019,
+      "country": "Senegal",
+      "lat": 14.799,
+      "lon": -17.263
+     },
+     {
+      "year": 2020,
+      "country": "Senegal",
+      "lat": 14.801,
+      "lon": -17.239
+     },
+     {
+      "year": 2021,
+      "country": "Senegal",
+      "lat": 14.8,
+      "lon": -17.239
+     }
+    ],
+    "winter_shift_km": [
+     2.6,
+     0.1
+    ],
+    "n_migr": 5,
+    "autumn_days": [
+     31,
+     51,
+     34
+    ],
+    "spring_days": [
+     35,
+     36
+    ],
+    "max_day_km": 871.1,
+    "best_year_km": 12197.8,
+    "migr_km": [
+     4449.9,
+     4718.7,
+     4526.9,
+     4661.8,
+     4639.2
+    ]
+   },
+   "Lillo": {
+    "animal": "L177801",
+    "sex": "m",
+    "first_day": "2019-05-16",
+    "last_day": "2021-04-12",
+    "years": 1.9,
+    "path_daily": 22153.9,
+    "path_hourly": 33719.9,
+    "winters": [
+     {
+      "year": 2019,
+      "country": "Guinea",
+      "lat": 10.256,
+      "lon": -13.582
+     },
+     {
+      "year": 2020,
+      "country": "Guinea",
+      "lat": 10.249,
+      "lon": -13.585
+     }
+    ],
+    "winter_shift_km": [
+     0.8
+    ],
+    "n_migr": 3,
+    "autumn_days": [
+     86,
+     83
+    ],
+    "spring_days": [
+     37
+    ],
+    "max_day_km": 406.7,
+    "best_year_km": 12246.6,
+    "migr_km": [
+     5014.9,
+     5215.9,
+     5039.7
+    ]
+   }
+  },
+  "n_migr": 8,
+  "lilla_max_shift": 2.6,
+  "lilla_autumn_min": 31,
+  "lilla_autumn_max": 51,
+  "autumn_med_days": 51.0,
+  "spring_med_days": 36.0
+ },
+ "compare": {
+  "stork": {
+   "autumn_kmd": 79.4,
+   "autumn_days": 61.0,
+   "autumn_km": 4829.3,
+   "n": 17
+  },
+  "osprey": {
+   "autumn_kmd": 169.6,
+   "autumn_days": 23.5,
+   "autumn_km": 5300.6,
+   "n": 22
+  },
+  "cuckoo": {
+   "autumn_kmd": null,
+   "autumn_days": null,
+   "autumn_km": null,
+   "n": 0
+  },
+  "harrier": {
+   "autumn_kmd": 88.8,
+   "autumn_days": 51.0,
+   "autumn_km": 4639.2,
+   "n": 5
+  },
+  "osprey_vs_stork_speed": 2.1,
+  "sea_ratio_osprey_stork": 36
+ },
+ "funnels": {
+  "Gibraltar": 13,
+  "Turkish straits": 21,
+  "Levant": 20,
+  "Florida and Cuba": 20
+ }
+}

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Where the storks go</title>
+<meta name="description" content="{{total.animals|int}} tagged birds of four species followed across three continents: white storks, ospreys, cuckoos and marsh harriers, their routes, funnels, sea crossings, winter quarters and fates, drawn as a hand-inked map.">
+<meta property="og:title" content="Where the storks go">
+<meta property="og:description" content="{{stork.n|int}} young white storks from eight populations, {{osprey.n|int}} ospreys, {{cuckoo.n|int}} cuckoos and {{harrier.n|int}} marsh harriers, followed by satellite and GPS. Storks hug the land: {{sp.stork.sea_pct|f1}}% of their flying was over the sea. Ospreys: {{sp.osprey.sea_pct|int}}%.">
+<meta property="og:image" content="https://maps.tristanhotham.com/bird-migration/header.png">
+<meta property="og:url" content="https://maps.tristanhotham.com/bird-migration/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+@font-face{font-family:"IM Fell";src:url(fonts/ttf/IMFeGPit28P.ttf) format("truetype");font-style:italic;font-display:swap}
+@font-face{font-family:"IM Fell";src:url(fonts/ttf/IMFeENrm28P.ttf) format("truetype");font-style:normal;font-display:swap}
+@font-face{font-family:"IM Fell SC";src:url(fonts/ttf/IMFeENsc28P.ttf) format("truetype");font-display:swap}
+/* Parchment and iron-gall ink, after The Inked World. */
+:root{
+  --bg:#F7F0DE; --panel:#EFE4C8; --fg:#2B2119; --muted:#6E6150; --rule:#E2D5B4; --card:#FBF6E8; --border:#CDBB92;
+  --red:#A3261B; --blue:#3D6E9E; --stork:#A3261B; --osprey:#3D6E9E; --cuckoo:#5E7A3A; --harrier:#9C6A1E;
+  --display:"Fraunces",Georgia,"Times New Roman",serif; --hand:"IM Fell",Georgia,serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17140F; --panel:#211C15; --fg:#EEE6D4; --muted:#AA9D86; --rule:#352E23; --card:#1C1813; --border:#4B4234;
+  --red:#E57A62; --blue:#86AEDB; --stork:#E57A62; --osprey:#86AEDB; --cuckoo:#9DBB72; --harrier:#D9A458; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17140F; --panel:#211C15; --fg:#EEE6D4; --muted:#AA9D86; --rule:#352E23; --card:#1C1813; --border:#4B4234;
+  --red:#E57A62; --blue:#86AEDB; --stork:#E57A62; --osprey:#86AEDB; --cuckoo:#9DBB72; --harrier:#D9A458; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 18px/1.62 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+.wrap{max-width:700px;margin:0 auto;padding-block:28px 64px}
+.wrap .bleed{width:min(1240px,calc(100vw - 32px));margin-left:calc((100% - min(1240px,100vw - 32px))/2)}
+a{color:inherit;text-decoration-color:var(--red);text-underline-offset:3px}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kicker b{background:var(--red);color:#fff;padding:5px 8px;font-weight:500}
+header.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:end;border-bottom:6px double var(--fg);padding-bottom:22px;margin-top:18px}
+h1{font:900 clamp(44px,11vw,86px)/.92 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1 span{color:var(--red);font:italic 400 1.02em/.9 var(--hand);letter-spacing:0}
+.mark{width:clamp(84px,17vw,140px);height:auto;display:block}
+.dek{grid-column:1/-1;font-size:21px;line-height:1.42;margin:8px 0 0;max-width:58ch}
+.byline{font:400 13px/1.4 var(--mono);color:var(--muted);margin-top:14px}
+h2{font:800 34px/1.04 var(--display);letter-spacing:-.01em;margin:54px 0 10px;text-wrap:balance}
+h2 .n{font:500 13px/1 var(--mono);color:var(--red);display:block;letter-spacing:.1em;margin-bottom:10px}
+p{margin:0 0 16px}
+.lede::first-letter{font:900 72px/.8 var(--display);float:left;margin:6px 10px 0 0;color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0 8px}
+.stats div{background:var(--card);padding:14px 12px}
+.stats b{display:block;font:900 clamp(22px,4.4vw,32px)/1 var(--display);letter-spacing:-.01em}
+.stats span{font:400 12px/1.35 var(--mono);color:var(--muted);display:block;margin-top:6px}
+@media (max-width:600px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figure{margin:26px 0 30px}
+.fig-h{font:600 19px/1.25 var(--display);margin:0 0 4px}
+.fig-sub{font:400 13px/1.45 var(--mono);color:var(--muted);margin:0 0 12px}
+.src{font:400 12px/1.45 var(--mono);color:var(--muted);margin-top:10px}
+.chart{width:100%;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.lab{font-size:12px}.lab.m{fill:var(--muted)}.lab.b{font-weight:500}.lab.s{font-size:11px}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font:400 12px/1.45 var(--mono);padding:8px 10px;border-radius:3px;max-width:300px;z-index:1000;transform:translate(-50%,calc(-100% - 12px));display:none}
+.controls{display:flex;gap:8px;align-items:center;margin:0 0 10px;flex-wrap:wrap}
+.scrollrow{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:2px;max-width:100%}
+.scrollrow .btn{flex:0 0 auto;white-space:nowrap}
+.ctl-l{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px;flex:0 0 auto;align-self:center}
+.btn,select{font:500 12px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:8px 10px;cursor:pointer;min-height:36px}
+select{max-width:100%}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn img{vertical-align:middle;margin:-6px 4px -6px -4px}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.searchbox{position:relative;flex:1 1 220px;min-width:0}
+input[type=search]{font:400 15px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:10px 11px;min-height:40px;width:100%}
+.suggest{position:absolute;left:0;right:0;top:100%;margin:2px 0 0;padding:0;list-style:none;background:var(--card);border:1px solid var(--border);z-index:1003;font:400 13px/1.3 var(--mono);display:none;max-height:340px;overflow:auto}
+.suggest li{padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--rule)}
+.suggest li span{color:var(--muted)}
+.suggest li[aria-selected="true"],.suggest li:hover{background:var(--panel)}
+.player{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-bottom:0;padding:8px 10px}
+.player .date{font:italic 400 24px/1 var(--hand);color:var(--red);min-width:9.5em}
+.player input[type=range]{flex:1 1 220px;accent-color:var(--red);min-width:140px}
+.player .play{font:600 13px/1 var(--mono);min-width:76px}
+#map{height:680px;border:1px solid var(--border);background:#E4DCC1;position:relative;overflow:hidden}
+@media (max-width:860px){#map{height:min(72vh,560px)}}
+.side{background:var(--card);border:1px solid var(--border);padding:12px 14px 10px;font:400 14px/1.55 var(--body);margin-top:12px;min-height:90px}
+.side .big{font:italic 400 28px/1.1 var(--hand);color:var(--red);margin:2px 0 4px}
+.side .sub{color:var(--muted);font:400 12px/1.4 var(--mono);margin:0 0 8px}
+.maplibregl-map{font:400 12px/1.4 var(--mono)}
+.maplibregl-ctrl-attrib{font:400 11px/1.3 var(--mono)!important;background:rgba(251,245,228,.85)!important;color:#5A4A38}
+.maplibregl-ctrl-group{background:#FBF5E4!important;border:1px solid #9C8656}
+.maplibregl-popup-content{background:#FBF5E4;color:#2B2119;font:400 13px/1.45 var(--body);border:1px solid #9C8656;border-radius:4px;padding:10px 12px;box-shadow:0 3px 12px rgba(60,40,10,.25);max-width:300px;max-height:55vh;overflow:auto}
+.maplibregl-popup-content b.t{display:block;font:italic 400 20px/1.15 var(--hand);color:#A3261B;margin-bottom:3px}
+.maplibregl-popup-content .m{font:400 11.5px/1.4 var(--mono);color:#6E6150;margin-bottom:5px}
+.maplibregl-popup-content button{font:500 11px var(--mono);background:#2B2119;color:#FBF5E4;border:0;border-radius:3px;padding:6px 8px;cursor:pointer;margin-top:6px}
+.maplibregl-popup-tip{border-top-color:#9C8656!important;border-bottom-color:#9C8656!important}
+.lyrWrap{position:absolute;top:10px;left:10px;z-index:3}
+.lyrBtn{background:#FBF5E4;color:#2B2119;border:1px solid #9C8656;border-radius:3px;font:600 12px/1 var(--mono);padding:9px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.lyrBtn[aria-expanded="true"]{background:#2B2119;color:#FBF5E4}
+.lyrPanel{background:#FBF5E4;color:#2B2119;border:1px solid #9C8656;border-radius:3px;padding:10px 12px 8px;margin-top:6px;width:260px;box-shadow:0 2px 10px rgba(0,0,0,.15);font:400 12px/1.3 var(--mono);max-height:min(60vh,500px);overflow:auto}
+.lyrPanel[hidden]{display:none}
+.lyrPanel .row{margin:0 0 8px}
+.lyrPanel label{display:flex;gap:6px;align-items:center;cursor:pointer;font-weight:600}
+.lyrPanel input[type=range]{width:100%;accent-color:#A3261B}
+.lyrPanel .sub{display:flex;gap:6px;align-items:center;color:#6E6150;font-size:11px;margin-top:3px}
+.lyrPanel .hd{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#6E6150;margin:10px 0 7px;border-top:1px solid #E2D5B4;padding-top:9px}
+.lyrPanel .hd:first-child{border-top:0;padding-top:0;margin-top:0}
+.lyrPanel .reset{font:400 11px var(--mono);color:#6E6150;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:italic 400 20px var(--hand);color:#6E6150;z-index:1;text-align:center;padding:20px}
+.cartouche{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(251,245,228,.9);border:1px solid #9C8656;padding:6px 9px 4px;font:400 11.5px/1.35 var(--mono);color:#2B2119;pointer-events:none;max-width:56%}
+.cartouche .r{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.cartouche img{margin:-4px 0}
+@media (max-width:600px){.cartouche{display:none}}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font:400 12px/1.3 var(--mono);color:var(--muted);margin-top:8px;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid}
+.legend i.hatch{height:11px;border:1px dashed;background:repeating-linear-gradient(45deg,currentColor 0 1px,transparent 1px 4px);opacity:.8}
+.pull{font:italic 400 28px/1.25 var(--hand);border-left:6px solid var(--red);padding:4px 0 4px 18px;margin:30px 0;color:var(--fg)}
+.note{background:var(--panel);border:1px solid var(--rule);padding:14px 16px;font-size:16px;margin:22px 0}
+table.tbl{width:100%;border-collapse:collapse;font:400 13px/1.4 var(--mono)}
+table.tbl th{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 10px 6px 0;border-bottom:2px solid var(--fg);white-space:nowrap}
+table.tbl td{padding:6px 10px 6px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+table.tbl td.r,table.tbl th.r{text-align:right;white-space:nowrap}
+table.tbl tr[data-p]{cursor:pointer}
+table.tbl tr[data-p]:hover td{background:var(--panel)}
+.tablebox{overflow:auto;border:1px solid var(--border);background:var(--card);padding:0 10px}
+details{margin:14px 0}
+summary{font:500 13px/1.4 var(--mono);cursor:pointer;padding:8px 0}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.cta a{font:500 13px/1 var(--mono);text-decoration:none;border:1px solid var(--fg);padding:11px 14px;border-radius:3px}
+.cta a.p{background:var(--red);border-color:var(--red);color:#fff}
+footer{border-top:6px double var(--fg);margin-top:56px;padding-top:16px;font:400 13px/1.55 var(--mono);color:var(--muted)}
+footer p{margin:0 0 10px}
+.theme{position:fixed;right:12px;bottom:12px;z-index:1002}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker"><b>Data study</b><span>Nature</span><span>Four species, three continents</span></div>
+<header class="hero">
+  <h1>Where the <span>storks</span> go</h1>
+  <img class="mark" id="heroMark" alt="" width="140" height="140">
+  <p class="dek">I followed {{total.animals|int}} tagged birds across Europe, Africa, Asia and the Americas: young white storks from eight populations, North American ospreys, cuckoos from the Baltic and marsh harriers from Belgium. Watch them go, see where the routes squeeze through narrow straits, who crosses the open sea and who will not, where they spend the winter, and how many never come back.</p>
+</header>
+<div class="byline">Dr Tristan Hotham · Independent researcher · 2026 · Data: Movebank Data Repository and Zenodo (CC0); Natural Earth</div>
+
+<div class="stats">
+  <div><b style="color:var(--stork)">{{sp.stork.sea_pct|f1}}%</b><span>of the storks' flying was over the sea; ospreys {{sp.osprey.sea_pct|int}}%</span></div>
+  <div><b style="color:var(--osprey)">{{compare.osprey_vs_stork_speed|f1}}×</b><span>as fast: ospreys made {{migr.osprey_autumn.km_per_day|int}} km a day in autumn, storks {{migr.stork_autumn.km_per_day|int}}</span></div>
+  <div><b style="color:var(--harrier)">{{sp.harrier.max_day_km|int}} km</b><span>a marsh harrier flew in one day, from Spain to Morocco</span></div>
+  <div><b style="color:var(--cuckoo)">{{stork.dead|int}} of {{stork.n|int}}</b><span>young storks were found dead within their first year</span></div>
+</div>
+
+<p class="lede">Every autumn white storks leave the roofs and chimneys of Europe for Africa, and they do it in a strange way. They are big, heavy birds that travel by soaring, circling up in rising warm air and gliding to the next thermal. Thermals do not form over the sea, so storks go round it. The ones from Spain and Germany funnel through the Strait of Gibraltar, fourteen kilometres wide; the ones from Poland, Greece and Russia go the long way round, over the Bosporus and down the Levant into Africa. Other migrants have other ways. Ospreys flap and fish and cross the Caribbean; cuckoos fly through the night and cross the Mediterranean and the Sahara in a few days.</p>
+<p>These routes are known from bird ringing and, since the 1990s, from tags that report positions by satellite. Some of the tracking data is published openly. I took four such data sets, all free to reuse, cleaned them in the same way and put {{total.daily|int}} daily positions on one hand-inked map. Press play to watch a year of migration: every bird from every year is folded onto one calendar, from 1 July to 30 June. Click a bird for its story.</p>
+
+<h2><span class="n">01 · The map</span>A year of migration</h2>
+<div class="bleed" id="atlas">
+<div class="controls"><div class="scrollrow" id="spRow"><span class="ctl-l">Species</span></div></div>
+<div class="controls">
+  <select id="popSel" aria-label="Population"><option value="">All populations</option></select>
+  <div class="searchbox"><input type="search" id="q" placeholder="Find a bird or a population (Zimbabwe, Lilla, Moscow...)" aria-label="Find a bird" autocomplete="off"><ul class="suggest" id="sug" role="listbox"></ul></div>
+</div>
+<div class="player">
+  <button class="btn play" id="play" aria-label="Play">▶ Play</button>
+  <span class="date" id="date" aria-live="off">1 July</span>
+  <input type="range" id="slider" min="0" max="364" step="0.25" value="0" aria-label="Date">
+  <select id="speed" aria-label="Speed"><option value="4">slow</option><option value="10" selected>steady</option><option value="25">fast</option></select>
+  <button class="btn" id="allYear" hidden>Back to all birds</button>
+</div>
+<div id="map" data-fullscreen-map role="application" aria-label="Hand-inked map of the tracks of storks, ospreys, cuckoos and marsh harriers"><div class="loading">Inking the map...</div>
+  <div class="cartouche" id="cart"></div></div>
+<div class="legend" id="legend"></div>
+<div class="side" id="side" aria-live="polite"></div>
+<p class="src">Faint lines: every bird's daily positions; the bright trail is its last three weeks. Hatched: where each species spent December and January (the smallest areas that hold half and nine tenths of the winter positions). Red chevrons: the funnels. Crosses: the last positions of birds later found dead. Nests: where the storks were tagged. Tagging data: {{data.stork.animals|int}} white storks (Flack et al., 2013 to 2014), {{data.osprey.animals|int}} ospreys (Martell, 1995 to 2002), {{data.cuckoo.animals|int}} cuckoos (Thorup et al., 2015 to 2020), {{harrier.n|int}} marsh harriers (INBO, 2018 to 2022); all CC0. Base map: Natural Earth; lettering IM Fell (OFL); optional relief and modern map in Map layers.</p>
+</div>
+
+<h2><span class="n">02 · Two roads to Africa</span>The great divide of the storks</h2>
+<p>The young storks in this study were tagged in their nests in 2013 by a team led by Andrea Flack at the Max Planck Institute for Ornithology, in eight populations from Spain to Uzbekistan, to compare the costs of their different journeys. They had no parents to follow: storks migrate in loose flocks, and the young set off on their own schedule.</p>
+<p>Their routes split along a line through central Europe. Of the {{stork.west_left|int}} storks from Germany and Spain that left home, {{stork.west_gib|int}} crossed the Strait of Gibraltar into Morocco; the rest stayed in Spain or France for the winter, or died before reaching the strait. Of the {{stork.east_left|int}} from Poland, Greece and Moscow that left, {{stork.east_straits|int}} crossed the Turkish straits, the Bosporus or the Dardanelles, and {{stork.east_levant|int}} flew down the narrow strip of Israel and Sinai into Africa. None of the eastern birds crossed at Gibraltar, and none of the western birds at the Turkish straits.</p>
+<div class="pull">The storks' whole flight log, {{sp.stork.flown_km|int}} km of it, crossed only {{sp.stork.sea_km|int}} km of open water.</div>
+<p>The Tunisian birds had the Sahara in front of them and nothing else: {{stork.tunisia_sahara|int}} set off straight across it. The Armenian storks went south through Turkey, Iraq and Iran; none reached Africa. And the {{stork.pops.Uzbekistan.n|int}} young storks from Uzbekistan did not migrate at all: none went more than {{stork.uzbek_max_km|int}} km from home in their first year.</p>
+<div class="figure"><p class="fig-h">Eight populations: who left, who wintered, who died</p><p class="fig-sub">Young storks tagged in the nest in 2013 (and one in South Africa). Left: went at least 300 km from home. Wintered: a winter position in December and January. Dead: confirmed dead by the end of the data, mid July 2014. Click a row to see the population on the map.</p><div class="tablebox"><table class="tbl" id="popTable"></table></div></div>
+<div class="figure"><p class="fig-h">Where each population spent the winter</p><p class="fig-sub">Median latitude of each stork's December and January positions. Crosses: birds later found dead. Hover a dot.</p><div class="chart" id="winChart"></div></div>
+<p>The winter quarters fan out from the Sahel, the belt of dry savanna south of the Sahara where {{stork.regions.Sahel|int}} of the {{stork.wintered|int}} storks with a winter position spent December and January. {{stork.regions.East and southern Africa|int}} went on into East and southern Africa, and {{stork.south_of_equator|int}} crossed the equator. The farthest traveller, {{stork.far_animal|raw}} from Moscow, ended up {{stork.far_km|int}} km from its nest, in {{stork.far_country|raw}}. {{stork.west_morocco|int}} German storks stopped for the winter in Morocco, and {{stork.west_france|int}} in France.</p>
+
+<h2><span class="n">03 · Around the sea or across it</span>Soarers, flappers and night fliers</h2>
+<p>For each species I measured how much of its flying was over open sea: the share of the straight lines between consecutive positions whose midpoint lies off the coast (for the GPS tags of storks and harriers, positions at most an hour apart from tracks thinned to one every ten minutes; for the satellite tags of ospreys and cuckoos, which give a few positions a day, lines up to {{sp.osprey.max_gap_h|int}} and {{sp.cuckoo.max_gap_h|int}} hours long).</p>
+<div class="figure"><p class="fig-h">Share of flying over the open sea</p><p class="fig-sub">Distance between consecutive positions with the midpoint over the sea, as a share of all distance flown. Long sea crossings are underestimated for the satellite tags, which rarely fix a bird far out at sea.</p><div class="chart" id="seaChart"></div></div>
+<p>The storks flew {{sp.stork.sea_pct|f1}}% of their distance over water, most of it in short hops across bays and straits; the longest stretch any stork spent over the sea was {{sp.stork.longest_sea_km|int}} km. The ospreys flew {{sp.osprey.sea_pct|int}}% over the sea, about {{compare.sea_ratio_osprey_stork|int}} times the storks' share. {{osprey.carib_n|int}} ospreys made crossings of 300 km or more, typically from Cuba or Hispaniola straight over the Caribbean to Venezuela or Colombia, a median {{osprey.carib_median_km|int}} km. One, KD, set off south from Hispaniola, spent {{osprey.longest_h|int}} hours over the sea and turned back to Haiti, {{osprey.longest_km|int}} km later.</p>
+<p>The cuckoos are the boldest. They migrate at night and their satellite tags fix them only every day or two, but {{cuckoo.n_cross_med|int}} lines run from southern Europe across the Mediterranean to Africa. One young cuckoo left Poland on 27 September 2017 and was in Chad {{cuckoo.fast.0.days|f1}} days later, {{cuckoo.fast.0.km|int}} km to the south, having crossed the Ionian Sea and the whole Sahara in between. The marsh harriers, hunters of reed beds that also soar but can flap for hours, crossed at Gibraltar and along the coast of the Western Sahara; the longest harrier crossing was {{sp.harrier.longest_sea_km|int}} km, over the Bay of Biscay.</p>
+
+<h2><span class="n">04 · How fast, how far</span>Thousands of kilometres a year</h2>
+<p>A migration here runs from the last day a bird was near its summer home to the first day it was near its winter quarters (and back in spring), and only migrations with a position on at least half the days count. A typical stork autumn migration covered {{migr.stork_autumn.path_km|int}} km in {{migr.stork_autumn.days|int}} days, {{migr.stork_autumn.km_per_day|int}} km a day including the days spent resting and feeding. The ospreys covered {{migr.osprey_autumn.path_km|int}} km in {{migr.osprey_autumn.days|f1}} days, {{migr.osprey_autumn.km_per_day|int}} km a day, and the marsh harriers {{migr.harrier_autumn.path_km|int}} km in {{migr.harrier_autumn.days|int}} days.</p>
+<div class="figure"><p class="fig-h">Speed of each migration</p><p class="fig-sub">Distance between daily positions divided by the days from departure to arrival, autumn and spring. Hover a dot.</p><div class="chart" id="speedChart"></div></div>
+<p>On their best days they go much faster. The best single day of the median stork that migrated was {{sp.stork.median_best_day_km|int}} km, and the best of all {{sp.stork.max_day_km|int}} km. Ospreys reached {{sp.osprey.max_day_km|int}} km. The record is a marsh harrier, Lilla, who on 11 September 2019 left central Spain at midday, crossed the Strait of Gibraltar in the evening and flew on into the night, and by the next noon was {{sp.harrier.max_day_km|int}} km away in Morocco.</p>
+<p>Over a whole year the totals are startling. {{sp.stork.n_full_year|int}} storks were followed for a year; the median covered {{sp.stork.median_full_year_km|int}} km between daily positions, and the young Moscow stork {{sp.stork.best_year_animal|raw}} at least {{sp.stork.best_year_km|int}} km, {{sp.stork.best_year_animal_hourly_total_km|int}} km measured between hourly positions. Daily positions miss the zigzags of a day's flying: for the storks the hourly track is {{stork.hourly_vs_daily_pct|int}}% longer.</p>
+<div class="figure"><p class="fig-h">Distance in a year</p><p class="fig-sub">Distance between daily positions over the best-covered 365 days of each bird followed for a year (a position on at least 60% of the days). A lower bound.</p><div class="chart" id="yearChart"></div></div>
+
+<h2><span class="n">05 · Winter quarters</span>The same bush, year after year</h2>
+<p>The marsh harriers show what the short tracks cannot: the same bird, year after year. Lilla, a female from the reed beds of the Scheldt near Antwerp, was followed for {{harrier.birds.Lilla.years|f1}} years and made {{harrier.birds.Lilla.n_migr|int}} complete migrations. Each winter she went to the same place near Dakar in Senegal: her winter centres in three winters were within {{harrier.lilla_max_shift|f1}} km of each other. Lillo, a male from the same marshes, wintered twice in Guinea, {{harrier.birds.Lillo.winter_shift_km.0|f1}} km apart. Their autumn journeys took between {{harrier.lilla_autumn_min|int}} and {{harrier.birds.Lillo.autumn_days.0|int}} days; in spring both hurried home in about five weeks.</p>
+<p>The ospreys spread out over the Americas. Of the {{osprey.n_south|int}} that were tracked south of 25°N in autumn and winter, {{osprey.n_south_america|int}} reached South America, most often Brazil ({{osprey.south_countries.Brazil|int}}), Venezuela ({{osprey.south_countries.Venezuela|int}}) and Colombia ({{osprey.south_countries.Colombia|int}}). {{osprey.south_countries.Mexico|int}} went no farther than Mexico, {{osprey.mexico_by_pop.West|int}} of them from the western population along the Columbia River and in Oregon.</p>
+
+<h2><span class="n">06 · The cost of the journey</span>Many young birds never come back</h2>
+<p>Of the {{stork.n|int}} young storks, {{stork.dead|int}} ({{stork.dead_pct|int}}%) were confirmed dead within the year of tracking. Many died before they had gone anywhere: {{stork.dead_before_leaving|int}} never went more than 300 km from home, in the first weeks out of the nest, and {{stork.dead_by_1oct|int}} of the deaths came before 1 October 2013. The route mattered too. Of the storks that left home, {{stork.leave_east_dead|int}} of {{stork.leave_east_n|int}} on the long eastern route were found dead, {{stork.leave_west_dead|int}} of {{stork.leave_west_n|int}} on the western route, and {{stork.leave_tunisia_dead|int}} of the {{stork.leave_tunisia_n|int}} Tunisian birds that set out across the Sahara.</p>
+<p>The osprey records note {{osprey.dead|int}} deaths. {{osprey.debris|int}} probably died on floating debris in the Gulf of Mexico or the Caribbean, birds that came down at sea and never reached land. One was shot in Mexico, one was found dead in Cuba and one near its nest. Two more, X2 and X3, were found in 2016 still wearing transmitters that had gone quiet many years before; X2, electrocuted on a power pole, was at least 22 years old.</p>
+
+<h2><span class="n">07 · The cuckoo experiment</span>Lost, and finding the way</h2>
+<p>The cuckoo data come from an experiment. Young cuckoos are raised by other birds and never meet their parents, so how do they find Africa? Kasper Thorup and colleagues caught cuckoos at Rybachy on the Baltic coast, and tagged them; some were let go at once and others were carried about {{cuckoo.displace_km|int}} km east to Kazan before release. {{cuckoo.control|int}} birds released at home and {{cuckoo.displaced|int}} displaced birds have usable positions. {{cuckoo.disp_sw|int}} of the {{cuckoo.disp_heading_n|int}} displaced birds whose first 500 km I could follow headed south-west, a median bearing of {{cuckoo.disp_heading_med|int}} degrees, as if correcting for the move; the birds released at home headed a median {{cuckoo.ctrl_heading_med|int}} degrees, almost due south. The small tags did not last: the median control bird was followed for {{cuckoo.control_span|int}} days and the median displaced bird for {{cuckoo.displaced_span|int}}, and {{cuckoo.africa|int}} cuckoos in all were tracked south of 20°N.</p>
+
+<h2><span class="n">08 · How I did this</span>Methods and caveats</h2>
+<p><b>Data.</b> Four open data sets: the MPIO white stork lifetime tracking data, GPS fixes every five minutes in daylight ({{data.stork.raw_rows|int}} rows); the Martell osprey satellite tracks ({{data.osprey.raw_rows|int}} rows); the Rybachy cuckoo satellite and GPS tracks ({{data.cuckoo.raw_rows|int}} rows); and the INBO marsh harrier GPS tracks ({{data.harrier.raw_rows|int}} rows; the one common buzzard in that set is left out). All are CC0.</p>
+<p><b>Cleaning.</b> Satellite (Argos) positions were kept only in the three best location classes, with a stated error under about 1.5 km ({{data.osprey.good_class_pct|f1}}% of the osprey rows); positions flagged as outliers were dropped, and any position that needed a speed over 120 km/h from the previous one (150 for cuckoos) over more than 5 km was removed. GPS tracks were thinned to one position an hour, and every bird to one position a day, the one nearest noon (UTC).</p>
+<p><b>Measures.</b> Distances are great-circle distances between positions, so they are lower bounds. A migration runs between a summer and a winter anchor (the median position in June and July, or the nest, and in December and January) at least 500 km apart. Funnels are counted when a bird has a position on both sides: Iberia then Morocco for Gibraltar; Thrace then Anatolia for the Turkish straits; any position in Israel, Sinai or western Jordan for the Levant. Sea is Natural Earth's 1:10m land outline.</p>
+<p><b>What this is not.</b> A few hundred birds, mostly young storks of one year and ospreys of the late 1990s, are not whole populations. Satellite tags give a few positions a day, sometimes none for days, so the osprey and cuckoo tracks are straight lines between sparse points. A tag that stops does not mean a bird died: only the deaths the data owners confirmed are counted as deaths.</p>
+<details><summary>Sources and licences</summary>
+<ul>
+<li>{{SRC_STORK}} https://doi.org/10.5441/001/1.78152p3q. CC0.</li>
+<li>{{SRC_OSPREY}} https://doi.org/10.5441/001/1.sv6335t3. CC0.</li>
+<li>{{SRC_CUCKOO}} https://doi.org/10.5441/001/1.vk36vq82. CC0.</li>
+<li>{{SRC_HARRIER}} https://doi.org/10.5281/zenodo.8238402. CC0.</li>
+<li>Natural Earth countries, lakes and populated places (public domain); rivers as prepared for The Inked World (https://maps.tristanhotham.com/ink-map/).</li>
+<li>Lettering: IM Fell types by Igino Marini (SIL Open Font License). Optional relief tiles © Esri; optional modern map © OpenStreetMap contributors, © CARTO.</li>
+</ul></details>
+
+<div class="cta"><a class="p" href="https://doi.org/10.5281/zenodo.24043676">Read the paper</a><a href="https://github.com/Tristan-Hotham/bird-migration">Data and code</a><a href="https://blog.tristanhotham.com/2026/10/31/bird-migration/">Blog post</a></div>
+
+<footer>
+<p>Dr Tristan Hotham, Independent researcher. ORCID <a href="https://orcid.org/0000-0003-4931-9349">0000-0003-4931-9349</a>.</p>
+<p>Cite as: Hotham, T. (2026) Where the storks go: four species of migratory bird tracked across three continents. Zenodo. <a href="https://doi.org/10.5281/zenodo.24043676">10.5281/zenodo.24043676</a></p>
+<p>Licence: code MIT; text, figures and derived data CC BY 4.0. The tracking data are CC0.</p>
+<p>I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.</p>
+</footer>
+</div>
+<div class="tip" id="tip"></div>
+<button class="btn theme" id="theme" aria-label="Toggle dark mode">◐</button>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="js/ink-palette.js"></script>
+<script src="js/pen-birds.js"></script>
+<script>
+const R = /*RESULTS*/;
+const V = "?v=/*VER*/";
+const INK = window.InkPalette;
+const SPK = ["stork", "osprey", "cuckoo", "harrier"];
+const SPN = { stork: "White stork", osprey: "Osprey", cuckoo: "Common cuckoo", harrier: "Marsh harrier" };
+const SPC = { stork: "#A3261B", osprey: "#3D6E9E", cuckoo: "#5E7A3A", harrier: "#9C6A1E" };
+const fmt = n => n == null || n === "" ? "n/a" : Math.round(n).toLocaleString("en-GB");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const tip = document.getElementById("tip");
+function showTip(h, x, y) { tip.innerHTML = h; tip.style.display = "block"; const w = tip.offsetWidth; x = Math.max(w / 2 + 8, Math.min(innerWidth - w / 2 - 8, x)); tip.style.left = x + scrollX + "px"; tip.style.top = y + scrollY + "px"; }
+function hideTip() { tip.style.display = "none"; }
+document.addEventListener("click", e => { if (!e.target.closest("svg")) hideTip(); });
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const lbl = (svg, x, y, s, cls = "lab", anchor = "start") => { const t = el("text", { x, y, class: cls, "text-anchor": anchor }, svg); t.textContent = s; return t; };
+const redraws = [];
+function resp(box, render) { let last = 0; const go = force => { const w = Math.max(280, Math.round(box.clientWidth)); if (!force && Math.abs(w - last) < 4) return; last = w; box.innerHTML = ""; render(w, w < 560); }; new ResizeObserver(() => go()).observe(box); go(); redraws.push(() => go(true)); }
+const isDark = () => { const r = document.documentElement; return r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const small = () => innerWidth < 860;
+document.getElementById("heroMark").src = PenBirds.canvas("stork", 0, 140, 2).toDataURL();
+
+/* ---------- state ---------- */
+let SITE = null, TR = null, map = null, ready = false;
+const S = { sp: "all", pop: "", sel: null, t: 0, playing: false, speed: 10, mode: "fold" };
+const LYDEF = { tracks: true, trails: true, birds: true, winter: true, funnels: true, crossings: true, deaths: true, nests: true, relief: true, reliefK: 30, rivers: true, borders: true, names: true, modern: false, modernK: 70, mlabels: false };
+const LY = { ...LYDEF };
+try { Object.assign(LY, JSON.parse(localStorage.getItem("bm_layers") || "{}")); } catch (e) {}
+const saveLY = () => { try { localStorage.setItem("bm_layers", JSON.stringify(LY)); } catch (e) {} };
+
+/* ---------- tracks: per animal, per season (1 July to 30 June) ---------- */
+const DAY = 86400000;
+const parseD = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+let GROUPS = [], ANIM = {};
+function buildGroups() {
+  GROUPS = [];
+  SITE.animals.forEach(a => {
+    const t = TR[a.k]; if (!t) return; ANIM[a.k] = a;
+    const t0 = parseD(t[0]), abs = t[1].map(d => t0 + d * DAY), lon = t[2].map(v => v / 100), lat = t[3].map(v => v / 100);
+    a.abs = abs; a.lon = lon; a.lat = lat;
+    let cur = null;
+    abs.forEach((ms, i) => {
+      const dt = new Date(ms), y = dt.getUTCMonth() >= 6 ? dt.getUTCFullYear() : dt.getUTCFullYear() - 1, s = (ms - Date.UTC(y, 6, 1)) / DAY;
+      if (!cur || cur.y !== y) { cur = { k: a.k, sp: a.sp, a, y, s: [], lon: [], lat: [] }; GROUPS.push(cur); }
+      cur.s.push(s); cur.lon.push(lon[i]); cur.lat.push(lat[i]);
+    });
+  });
+}
+function visible(a) { return (S.sp === "all" || a.sp === S.sp) && (!S.pop || a.pop === S.pop) && (!S.sel || a.k === S.sel); }
+function interp(ts, lon, lat, t) {
+  if (t < ts[0] - 0.5 || t > ts[ts.length - 1] + 0.5) return null;
+  let lo = 0, hi = ts.length - 1;
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (ts[m] <= t) lo = m; else hi = m; }
+  if (t <= ts[0]) return [lon[0], lat[0]];
+  if (t >= ts[hi]) return [lon[hi], lat[hi]];
+  const g = ts[hi] - ts[lo]; if (g > 6) return null;
+  const f = (t - ts[lo]) / g; return [lon[lo] + (lon[hi] - lon[lo]) * f, lat[lo] + (lat[hi] - lat[lo]) * f];
+}
+const brg = (a, b) => { const r = Math.PI / 180, p1 = a[1] * r, p2 = b[1] * r, dl = (b[0] - a[0]) * r; return (Math.atan2(Math.sin(dl) * Math.cos(p2), Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl)) / r + 360) % 360; };
+function series(g) { return S.mode === "fold" ? [g.s, g.lon, g.lat] : null; }
+function frameData() {
+  const birds = [], trails = [], fl = Math.floor(performance.now() / 260) % 2, TRAIL = 21;
+  if (S.mode === "fold") {
+    GROUPS.forEach(g => { if (!visible(g.a)) return; addMover(g.s, g.lon, g.lat, g.a, S.t, birds, trails, fl, TRAIL); });
+  } else {
+    const a = ANIM[S.sel]; const ts = a.abs.map(ms => (ms - a.abs[0]) / DAY); addMover(ts, a.lon, a.lat, a, S.t, birds, trails, fl, TRAIL);
+  }
+  return [{ type: "FeatureCollection", features: birds }, { type: "FeatureCollection", features: trails }];
+}
+function addMover(ts, lon, lat, a, t, birds, trails, fl, TRAIL) {
+  const p = interp(ts, lon, lat, t); if (!p) return;
+  const q = interp(ts, lon, lat, t - 1.2) || p;
+  const moving = Math.abs(p[0] - q[0]) + Math.abs(p[1] - q[1]) > 0.05;
+  birds.push({ type: "Feature", properties: { k: a.k, sp: a.sp, i: `pb-${a.sp}-${moving ? fl : 0}`, r: moving ? brg(q, p) : (a._r || 0), sel: a.k === S.sel ? 1 : 0 }, geometry: { type: "Point", coordinates: p } });
+  if (moving) a._r = brg(q, p);
+  const c = []; for (let i = 0; i < ts.length; i++) { if (ts[i] > t - TRAIL && ts[i] < t) c.push([lon[i], lat[i]]); }
+  c.push(p);
+  if (c.length >= 2) trails.push({ type: "Feature", properties: { sp: a.sp }, geometry: { type: "LineString", coordinates: c } });
+}
+function trackFC() {
+  const f = [];
+  GROUPS.forEach(g => { if (!visible(g.a) || g.s.length < 2) return;
+    // break the line at long gaps
+    let seg = [[g.lon[0], g.lat[0]]];
+    for (let i = 1; i < g.s.length; i++) { if (g.s[i] - g.s[i - 1] > 8) { if (seg.length > 1) f.push(line(seg, g.a)); seg = []; } seg.push([g.lon[i], g.lat[i]]); }
+    if (seg.length > 1) f.push(line(seg, g.a)); });
+  return { type: "FeatureCollection", features: f };
+}
+const line = (c, a) => ({ type: "Feature", properties: { k: a.k, sp: a.sp, sel: a.k === S.sel ? 1 : 0 }, geometry: { type: "LineString", coordinates: c } });
+function pointsFC(kind) {
+  const f = [];
+  SITE.animals.forEach(a => { if (!visible(a)) return;
+    if (kind === "dead" && a.dead) f.push({ type: "Feature", properties: { k: a.k, sp: a.sp }, geometry: { type: "Point", coordinates: a.last } }); });
+  return { type: "FeatureCollection", features: f };
+}
+
+/* ---------- the inked base map ---------- */
+const PAPER = INK.paper, SEA = "#DCDDCB";
+function hatch(col) { const c = document.createElement("canvas"), n = 24; c.width = c.height = n; const x = c.getContext("2d"); x.strokeStyle = col; x.globalAlpha = .55; x.lineWidth = 1.6;
+  for (let i = -n; i < 2 * n; i += 8) { x.beginPath(); x.moveTo(i, n); x.lineTo(i + n, 0); x.stroke(); } const d = x.getImageData(0, 0, n, n); return { width: n, height: n, data: new Uint8Array(d.data.buffer) }; }
+function paperImg() { const c = document.createElement("canvas"), n = 128; c.width = c.height = n; const x = c.getContext("2d"); x.fillStyle = PAPER; x.fillRect(0, 0, n, n);
+  let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 900; i++) { x.fillStyle = `rgba(120,90,40,${r() * .05})`; x.fillRect(r() * n, r() * n, 1 + r() * 2, 1 + r() * 2); }
+  const d = x.getImageData(0, 0, n, n); return { width: n, height: n, data: new Uint8Array(d.data.buffer) }; }
+const iz = (...a) => ["interpolate", ["linear"], ["zoom"], ...a];
+function startMap() {
+  if (typeof maplibregl === "undefined") { document.querySelector("#map .loading").textContent = "The map library did not load. The charts below still work."; return; }
+  const base = new URL("./", location.href).href;
+  map = new maplibregl.Map({ container: "map", bounds: small() ? [[-110, -35], [60, 62]] : [[-128, -38], [72, 62]], fitBoundsOptions: { padding: 4 }, minZoom: 0.5, maxZoom: 10, renderWorldCopies: false, dragRotate: false, pitchWithRotate: false, fadeDuration: 0,
+    attributionControl: { compact: true, customAttribution: "Tracks: Movebank Data Repository, INBO (CC0) · Natural Earth" },
+    style: { version: 8, glyphs: base + "fonts/{fontstack}/{range}.pbf", sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": SEA } }] } });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+  map.on("error", e => { if (e && e.error && !/tile|Failed to fetch|NetworkError|AJAXError/i.test(e.error.message || "")) console.warn(e.error.message); });
+  map.on("load", async () => {
+    const get = f => fetch(f + V).then(r => r.json());
+    const [land, borders, rivers, lakes, ctry, towns, wint] = await Promise.all(["data/geo/land.json", "data/geo/borders.json", "data/geo/rivers.json", "data/geo/lakes.json", "data/geo/countries.json", "data/geo/towns.json", "data/winter_areas.geojson"].map(get));
+    map.addImage("paper", paperImg());
+    SPK.forEach(s => map.addImage("hatch-" + s, hatch(SPC[s])));
+    PenBirds.addTo(map);
+    const src = (id, data, o) => map.addSource(id, Object.assign({ type: "geojson", data }, o || {}));
+    src("land", land); src("borders", borders); src("rivers", rivers); src("lakes", lakes); src("ctry", ctry); src("towns", towns); src("winter", wint);
+    map.addSource("relief", { type: "raster", tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 12, attribution: "Relief © Esri" });
+    map.addSource("modern", { type: "raster", tiles: ["https://a.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png", "https://b.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png"], tileSize: 256, attribution: "© OpenStreetMap contributors © CARTO" });
+    map.addSource("mlabels", { type: "raster", tiles: ["https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png", "https://b.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"], tileSize: 256 });
+    src("tracks", trackFC()); src("trails", { type: "FeatureCollection", features: [] }, { lineMetrics: true }); src("birds", { type: "FeatureCollection", features: [] });
+    src("dead", pointsFC("dead")); src("cross", { type: "FeatureCollection", features: SITE.crossings.map(c => ({ type: "Feature", properties: { sp: c.sp, km: c.km, id: c.id, date: c.date }, geometry: { type: "LineString", coordinates: c.c } })) });
+    src("nests", { type: "FeatureCollection", features: Object.entries(SITE.pops).filter(([p]) => p !== "South Africa").map(([p, v]) => ({ type: "Feature", properties: { n: p, c: v[2] }, geometry: { type: "Point", coordinates: [v[0], v[1]] } })) });
+    src("funnels", { type: "FeatureCollection", features: Object.entries(SITE.funnels).map(([n, v]) => ({ type: "Feature", properties: { n, t: `${n.toUpperCase()}\n${v[3]} ${v[4]}`, sp: v[2] }, geometry: { type: "Point", coordinates: [v[0], v[1]] } })) });
+    const L = l => map.addLayer(l);
+    // land on paper, ink coast with ripples on the sea side
+    L({ id: "sea-wash", type: "background", paint: { "background-color": SEA } });
+    L({ id: "land", type: "fill", source: "land", paint: { "fill-pattern": "paper" } });
+    L({ id: "relief", type: "raster", source: "relief", paint: { "raster-opacity": LY.reliefK / 100, "raster-saturation": -1, "raster-contrast": 0.15, "raster-brightness-min": 0.25, "raster-fade-duration": 0 } });
+    L({ id: "modern", type: "raster", source: "modern", layout: { visibility: "none" }, paint: { "raster-opacity": LY.modernK / 100, "raster-fade-duration": 0 } });
+    [[1.6, INK.ink, .55], [3.2, INK.blue, .45], [4.8, INK.blue, .35], [6.4, INK.blueSoft, .3]].forEach(([o, c, op], i) =>
+      L({ id: "ripple-" + i, type: "line", source: "land", minzoom: i > 1 ? 2 : 0, paint: { "line-color": c, "line-width": iz(0, .45, 6, .8), "line-offset": iz(0, o * .65, 4, o, 8, o * 1.2), "line-opacity": op } }));
+    L({ id: "lakes", type: "fill", source: "lakes", paint: { "fill-color": "#C9D4D0", "fill-outline-color": INK.ink } });
+    L({ id: "rivers", type: "line", source: "rivers", layout: { "line-cap": "round" }, paint: { "line-color": INK.blue, "line-width": iz(1, .5, 6, 1.3), "line-opacity": .75 } });
+    L({ id: "borders", type: "line", source: "borders", paint: { "line-color": INK.ink, "line-width": iz(1, .45, 6, .9), "line-opacity": .5, "line-dasharray": [5, 2, 1, 2] } });
+    L({ id: "coast", type: "line", source: "land", paint: { "line-color": INK.ink, "line-width": iz(0, .8, 5, 1.2, 9, 1.6) } });
+    L({ id: "winter", type: "fill", source: "winter", filter: ["==", ["get", "level"], 50], paint: { "fill-pattern": ["concat", "hatch-", ["get", "species"]], "fill-opacity": .85 } });
+    L({ id: "winter-90", type: "line", source: "winter", filter: ["==", ["get", "level"], 90], paint: { "line-color": ["match", ["get", "species"], "stork", SPC.stork, "osprey", SPC.osprey, "cuckoo", SPC.cuckoo, SPC.harrier], "line-width": 1, "line-dasharray": [2, 2], "line-opacity": .7 } });
+    L({ id: "winter-50", type: "line", source: "winter", filter: ["==", ["get", "level"], 50], paint: { "line-color": ["match", ["get", "species"], "stork", SPC.stork, "osprey", SPC.osprey, "cuckoo", SPC.cuckoo, SPC.harrier], "line-width": 1.2, "line-opacity": .85 } });
+    L({ id: "modern-labels", type: "raster", source: "mlabels", layout: { visibility: "none" }, paint: { "raster-fade-duration": 0 } });
+    L({ id: "ctry", type: "symbol", source: "ctry", filter: ["<=", ["get", "r"], ["+", ["zoom"], 2.2]], layout: { "text-field": ["upcase", ["get", "n"]], "text-font": ["Ink Caps"], "text-size": iz(1, 9, 4, 12, 7, 15), "text-letter-spacing": .18, "text-max-width": 7 },
+      paint: { "text-color": "#6E5A44", "text-halo-color": "rgba(243,229,191,.85)", "text-halo-width": 1.4 } });
+    L({ id: "towns", type: "symbol", source: "towns", filter: ["<=", ["get", "r"], ["-", ["zoom"], 1]], layout: { "text-field": ["get", "n"], "text-font": ["Ink Italic"], "text-size": iz(2, 10.5, 7, 13.5), "text-variable-anchor": ["left", "right", "top"], "text-radial-offset": .45, "text-optional": false },
+      paint: { "text-color": INK.ink, "text-halo-color": "rgba(243,229,191,.9)", "text-halo-width": 1.3 } });
+    L({ id: "towns-dot", type: "circle", source: "towns", filter: ["<=", ["get", "r"], ["-", ["zoom"], 1]], paint: { "circle-radius": iz(2, 1.6, 7, 2.6), "circle-color": PAPER, "circle-stroke-color": INK.ink, "circle-stroke-width": 1 } });
+    // study layers
+    const colE = ["match", ["get", "sp"], "stork", SPC.stork, "osprey", SPC.osprey, "cuckoo", SPC.cuckoo, SPC.harrier];
+    L({ id: "cross", type: "line", source: "cross", paint: { "line-color": colE, "line-width": 1.3, "line-dasharray": [1, 2.2], "line-opacity": .8 } });
+    L({ id: "tracks", type: "line", source: "tracks", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": colE, "line-width": iz(1, ["case", ["==", ["get", "sel"], 1], 2.4, .6], 6, ["case", ["==", ["get", "sel"], 1], 3, 1.2]), "line-opacity": ["case", ["==", ["get", "sel"], 1], .9, .28] } });
+    L({ id: "trails", type: "line", source: "trails", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": colE, "line-width": iz(1, 1.6, 6, 2.6),
+      "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "rgba(43,33,25,0)", 1, "rgba(43,33,25,0.9)"] } });
+    L({ id: "trails-c", type: "line", source: "trails", layout: { "line-cap": "round" }, paint: { "line-color": colE, "line-width": iz(1, 1.2, 6, 2), "line-opacity": .7 } });
+    L({ id: "nests", type: "symbol", source: "nests", layout: { "icon-image": "pb-nest-0", "icon-size": iz(1, .8, 6, 1.2), "icon-allow-overlap": true, "text-field": ["step", ["zoom"], "", 3, ["get", "n"]], "text-font": ["Ink Italic"], "text-size": 11.5, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
+      paint: { "text-color": INK.red, "text-halo-color": "rgba(243,229,191,.9)", "text-halo-width": 1.2 } });
+    L({ id: "dead", type: "symbol", source: "dead", layout: { "icon-image": "pb-cross-0", "icon-size": iz(1, .75, 6, 1.1), "icon-allow-overlap": true } });
+    L({ id: "funnels", type: "symbol", source: "funnels", layout: { "icon-image": "pb-gate-0", "icon-size": iz(1, .8, 6, 1.3), "icon-allow-overlap": true, "text-field": ["step", ["zoom"], "", 2.2, ["get", "t"]], "text-font": ["Ink Italic"], "text-size": iz(2, 10.5, 6, 13), "text-offset": [0, 1.2], "text-anchor": "top", "text-max-width": 11, "text-optional": true },
+      paint: { "text-color": INK.red, "text-halo-color": "rgba(243,229,191,.95)", "text-halo-width": 1.6 } });
+    L({ id: "birds", type: "symbol", source: "birds", layout: { "icon-image": ["get", "i"], "icon-rotate": ["get", "r"], "icon-rotation-alignment": "map", "icon-allow-overlap": true, "icon-ignore-placement": true,
+      "icon-size": iz(0.5, ["case", ["==", ["get", "sel"], 1], .85, .55], 3, ["case", ["==", ["get", "sel"], 1], 1.2, .8], 7, ["case", ["==", ["get", "sel"], 1], 1.6, 1.15]), "symbol-sort-key": ["get", "sel"] } });
+    ready = true; document.querySelector("#map .loading")?.remove();
+    ["birds", "tracks", "dead"].forEach(id => { map.on("click", id, e => { const f = e.features[0]; if (f) popup(f.properties.k, e.lngLat); }); map.on("mouseenter", id, () => map.getCanvas().style.cursor = "pointer"); map.on("mouseleave", id, () => map.getCanvas().style.cursor = ""); });
+    map.on("click", "funnels", e => { const f = e.features[0]; new maplibregl.Popup({ maxWidth: "280px" }).setLngLat(e.lngLat).setHTML(`<b class="t">${esc(f.properties.n)}</b>${esc(SITE.funnels[f.properties.n][3])} ${esc(SITE.funnels[f.properties.n][4])}.`).addTo(map); });
+    map.on("click", "cross", e => { const f = e.features[0]; new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<b class="t">Over the sea</b><div class="m">${esc(SPN[f.properties.sp])} ${esc(f.properties.id)} · ${esc(f.properties.date)}</div>About ${fmt(f.properties.km)} km between the last position on land and the next one, a straight line between positions.`).addTo(map); });
+    map.on("click", "nests", e => { const f = e.features[0]; new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<b class="t">${esc(f.properties.n)}</b>${f.properties.c} young white storks tagged in the nest in 2013.<br><button data-pop="${esc(f.properties.n)}">Show only this population</button>`).addTo(map); });
+    applyLayers(); layersControl(); tick();
+  });
+}
+function popup(k, ll) {
+  const a = ANIM[k]; if (!a) return;
+  const p = new maplibregl.Popup({ maxWidth: "300px" }).setLngLat(ll).setHTML(`<b class="t">${esc(a.nm)}</b><div class="m">${esc(SPN[a.sp])} · ${esc(a.pop)}${a.dead ? " · found dead" : ""}</div>${esc(a.story)}<br><button data-follow="${esc(k)}">Follow this bird</button>`).addTo(map);
+}
+document.addEventListener("click", e => { const b = e.target.closest("button[data-follow]"); if (b) { selectBird(b.dataset.follow); document.querySelectorAll(".maplibregl-popup").forEach(p => p.remove()); }
+  const q = e.target.closest("button[data-pop]"); if (q) { setSp("stork"); S.pop = q.dataset.pop; document.getElementById("popSel").value = S.pop; refresh(); document.querySelectorAll(".maplibregl-popup").forEach(p => p.remove()); } });
+function applyLayers() {
+  if (!ready) return;
+  const vis = (id, on) => map.getLayer(id) && map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+  vis("tracks", LY.tracks); vis("trails", LY.trails); vis("trails-c", LY.trails); vis("birds", LY.birds);
+  ["winter", "winter-50", "winter-90"].forEach(i => vis(i, LY.winter)); vis("funnels", LY.funnels); vis("cross", LY.crossings); vis("dead", LY.deaths); vis("nests", LY.nests);
+  vis("relief", LY.relief); map.setPaintProperty("relief", "raster-opacity", LY.reliefK / 100);
+  vis("rivers", LY.rivers); vis("lakes", LY.rivers); vis("borders", LY.borders); vis("ctry", LY.names); vis("towns", LY.names); vis("towns-dot", LY.names);
+  vis("modern", LY.modern); map.setPaintProperty("modern", "raster-opacity", LY.modernK / 100); vis("modern-labels", LY.mlabels);
+  const sp = S.sp === "all" ? null : S.sp;
+  map.setFilter("winter", ["all", ["==", ["get", "level"], 50]].concat(sp ? [["==", ["get", "species"], sp]] : []));
+  map.setFilter("winter-50", ["all", ["==", ["get", "level"], 50]].concat(sp ? [["==", ["get", "species"], sp]] : []));
+  map.setFilter("winter-90", ["all", ["==", ["get", "level"], 90]].concat(sp ? [["==", ["get", "species"], sp]] : []));
+  map.setFilter("cross", sp ? ["==", ["get", "sp"], sp] : null);
+  map.setFilter("funnels", sp ? ["==", ["get", "sp"], sp] : null);
+  vis("nests", LY.nests && (!sp || sp === "stork"));
+}
+function layersControl() {
+  const w = document.createElement("div"); w.className = "lyrWrap";
+  const cb = (k, t, sub) => `<div class="row"><label><input type="checkbox" data-l="${k}">${t}</label>${sub ? `<div class="sub">${sub}</div>` : ""}</div>`;
+  w.innerHTML = `<button class="lyrBtn" aria-expanded="false">Map layers</button><div class="lyrPanel" hidden>
+    <div class="hd">The birds</div>${cb("birds", "Moving birds")}${cb("trails", "Trails (last three weeks)")}${cb("tracks", "Every track, faint")}${cb("winter", "Winter quarters, hatched")}${cb("funnels", "Funnels")}${cb("crossings", "Long sea crossings, dotted")}${cb("deaths", "Birds found dead, crosses")}${cb("nests", "Stork nests where tagged")}
+    <div class="hd">The base map</div>${cb("names", "Place names, hand-lettered")}${cb("borders", "Borders")}${cb("rivers", "Rivers and lakes")}
+    ${cb("relief", "Hill shading (Esri)", `<span>strength</span><input type="range" min="10" max="70" data-l="reliefK" aria-label="Hill shading strength">`)}
+    ${cb("modern", "Modern map underneath (CARTO)", `<span>strength</span><input type="range" min="20" max="100" data-l="modernK" aria-label="Modern map strength">`)}${cb("mlabels", "Modern place names (CARTO)")}
+    <button class="reset">Reset layers</button></div>`;
+  document.getElementById("map").appendChild(w);
+  const b = w.querySelector(".lyrBtn"), p = w.querySelector(".lyrPanel");
+  ["click", "dblclick", "mousedown", "touchstart", "wheel"].forEach(t => w.addEventListener(t, e => e.stopPropagation(), { passive: true }));
+  b.onclick = () => { const o = p.hidden; p.hidden = !o; b.setAttribute("aria-expanded", o); };
+  const sync = () => { w.querySelectorAll("input[data-l][type=checkbox]").forEach(i => i.checked = !!LY[i.dataset.l]); w.querySelectorAll("input[data-l][type=range]").forEach(i => i.value = LY[i.dataset.l]); };
+  w.querySelectorAll("input[data-l][type=checkbox]").forEach(i => i.onchange = () => { LY[i.dataset.l] = i.checked; saveLY(); applyLayers(); });
+  w.querySelectorAll("input[data-l][type=range]").forEach(i => i.oninput = () => { LY[i.dataset.l] = +i.value; saveLY(); applyLayers(); });
+  w.querySelector(".reset").onclick = () => { Object.assign(LY, LYDEF); saveLY(); sync(); applyLayers(); };
+  sync();
+}
+
+/* ---------- time ---------- */
+const slider = document.getElementById("slider"), dateEl = document.getElementById("date"), playB = document.getElementById("play");
+function dateLabel() {
+  if (S.mode === "fold") { const d = new Date(Date.UTC(2001, 6, 1) + Math.floor(S.t) * DAY); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; }
+  const a = ANIM[S.sel], d = new Date(a.abs[0] + Math.floor(S.t) * DAY); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+let last = 0, lastLbl = "";
+function tick(now) {
+  now = now || performance.now();
+  const dt = Math.min(0.1, (now - (last || now)) / 1000); last = now;
+  if (S.playing) { S.t += dt * S.speed; if (S.t > +slider.max) S.t = 0; slider.value = S.t; }
+  if (ready) {
+    const [b, t] = frameData(); map.getSource("birds").setData(b); map.getSource("trails").setData(t);
+  }
+  const l = dateLabel(); if (l !== lastLbl) { dateEl.textContent = l; lastLbl = l; }
+  requestAnimationFrame(tick);
+}
+playB.onclick = () => { S.playing = !S.playing; playB.textContent = S.playing ? "❚❚ Pause" : "▶ Play"; playB.setAttribute("aria-label", S.playing ? "Pause" : "Play"); };
+slider.oninput = () => { S.t = +slider.value; };
+document.getElementById("speed").onchange = e => { S.speed = +e.target.value; };
+
+/* ---------- selection ---------- */
+function setSp(sp) { S.sp = sp; S.pop = ""; document.querySelectorAll("#spRow .btn").forEach(b => b.setAttribute("aria-pressed", b.dataset.sp === sp)); fillPops(); }
+function fillPops() { const sel = document.getElementById("popSel"); const ps = [...new Set(SITE.animals.filter(a => S.sp === "all" || a.sp === S.sp).map(a => a.pop))].sort();
+  sel.innerHTML = `<option value="">All populations</option>` + ps.map(p => `<option>${esc(p)}</option>`).join(""); sel.value = S.pop; }
+function refresh() { if (ready) { map.getSource("tracks").setData(trackFC()); map.getSource("dead").setData(pointsFC("dead")); applyLayers(); } side(); legend(); }
+function selectBird(k) {
+  const a = ANIM[k]; if (!a) return;
+  S.sel = k; S.mode = "real"; S.follow = true; S.t = 0; slider.max = Math.ceil((a.abs[a.abs.length - 1] - a.abs[0]) / DAY); slider.value = 0;
+  document.getElementById("allYear").hidden = false; S.speed = Math.max(4, Math.min(25, +slider.max / 25));
+  if (ready) { const xs = a.lon, ys = a.lat; map.fitBounds([[Math.min(...xs), Math.min(...ys)], [Math.max(...xs), Math.max(...ys)]], { padding: 50, duration: 900, maxZoom: 6 }); }
+  if (!S.playing) playB.click();
+  refresh(); if (small()) document.getElementById("atlas").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+document.getElementById("allYear").onclick = () => { S.sel = null; S.mode = "fold"; S.follow = false; S.t = 0; slider.max = 364; S.speed = +document.getElementById("speed").value; document.getElementById("allYear").hidden = true; refresh(); };
+function side() {
+  const box = document.getElementById("side");
+  if (S.sel) { const a = ANIM[S.sel]; box.innerHTML = `<div class="sub">${esc(SPN[a.sp])} · ${esc(a.pop)} · ${fmt(a.n)} daily positions over ${fmt(a.days)} days</div><div class="big">${esc(a.nm)}</div><div>${esc(a.story)}</div>`; return; }
+  const n = SITE.animals.filter(visible).length;
+  box.innerHTML = `<div class="sub">${n} birds shown${S.pop ? " · " + esc(S.pop) : ""}</div>Press play to watch every bird of every year move on one calendar, 1 July to 30 June. Click a bird or a track to read its story and follow it through its real dates; search for a bird or a population above.`;
+}
+function legend() {
+  const lg = document.getElementById("legend"), cart = document.getElementById("cart");
+  const sps = S.sp === "all" ? SPK : [S.sp];
+  lg.innerHTML = sps.map(s => `<span><img src="${PenBirds.canvas(s, 0, 26, 2).toDataURL()}" width="26" height="26" alt="">${SPN[s]}</span>`).join("") +
+    `<span><i class="hatch" style="color:${SPC[sps[0]]}"></i>winter quarters</span><span><i style="border-top:2px dotted #6E6150"></i>sea crossing</span><span><img src="${PenBirds.canvas("cross", 0, 16, 2).toDataURL()}" width="16" height="16" alt="">found dead</span><span><img src="${PenBirds.canvas("gate", 0, 18, 2).toDataURL()}" width="18" height="18" alt="">funnel</span>`;
+  cart.innerHTML = sps.map(s => `<div class="r"><img src="${PenBirds.canvas(s, 0, 22, 2).toDataURL()}" width="22" height="22" alt=""><span style="color:${SPC[s]}">${SPN[s]}</span></div>`).join("");
+}
+
+/* ---------- search ---------- */
+(function search() {
+  const q = document.getElementById("q"), sug = document.getElementById("sug");
+  let cur = [], ai = -1;
+  const idx = () => SITE.animals.map(a => ({ k: a.k, t: a.nm, s: SPN[a.sp] + " · " + a.pop, h: (a.nm + " " + a.id + " " + a.pop + " " + a.story).toLowerCase() }))
+    .concat([...new Set(SITE.animals.map(a => a.sp + "|" + a.pop))].map(x => { const [sp, p] = x.split("|"); return { pop: p, sp, t: p, s: SPN[sp] + " population", h: p.toLowerCase() }; }));
+  const show = () => { sug.innerHTML = cur.map((c, i) => `<li role="option" aria-selected="${i === ai}" data-i="${i}">${esc(c.t)} <span>${esc(c.s)}</span></li>`).join(""); sug.style.display = cur.length ? "block" : "none";
+    sug.querySelectorAll("li").forEach(li => li.onmousedown = e => { e.preventDefault(); pick(cur[+li.dataset.i]); }); };
+  const pick = c => { if (!c) return; q.value = c.t; sug.style.display = "none"; if (c.pop) { setSp(c.sp); S.pop = c.pop; document.getElementById("popSel").value = c.pop; refresh(); } else selectBird(c.k); };
+  q.addEventListener("input", () => { if (!SITE) return; const v = q.value.trim().toLowerCase(); ai = -1; if (v.length < 2) { cur = []; show(); return; }
+    cur = idx().filter(x => x.h.includes(v)).sort((a, b) => (a.pop ? 0 : 1) - (b.pop ? 0 : 1) || (a.t.toLowerCase().startsWith(v) ? 0 : 1) - (b.t.toLowerCase().startsWith(v) ? 0 : 1)).slice(0, 12); show(); });
+  q.addEventListener("keydown", e => { if (e.key === "ArrowDown") { ai = Math.min(cur.length - 1, ai + 1); show(); e.preventDefault(); } else if (e.key === "ArrowUp") { ai = Math.max(0, ai - 1); show(); e.preventDefault(); }
+    else if (e.key === "Enter") pick(cur[ai >= 0 ? ai : 0]); else if (e.key === "Escape") sug.style.display = "none"; });
+  q.addEventListener("blur", () => setTimeout(() => sug.style.display = "none", 150));
+})();
+
+/* ---------- charts ---------- */
+const POPS = ["SW Germany", "Spain (Doñana)", "Tunisia", "Poland", "Greece (Evros Delta)", "Russia (Moscow)", "Armenia", "Uzbekistan", "South Africa"];
+function popTable() {
+  const t = document.getElementById("popTable"), P = SITE.popstats;
+  t.innerHTML = `<thead><tr><th>Population</th><th class="r">Tagged</th><th class="r">Left</th><th class="r">Wintered</th><th class="r">Dead</th><th>Route</th></tr></thead><tbody>` +
+    POPS.map(p => { const x = P[p], rt = { "SW Germany": "Gibraltar", "Spain (Doñana)": "Gibraltar", "Tunisia": "across the Sahara", "Poland": "Bosporus and Levant", "Greece (Evros Delta)": "Dardanelles and Levant", "Russia (Moscow)": "Bosporus and Levant", "Armenia": "to Iraq and Iran", "Uzbekistan": "stayed", "South Africa": "southern Africa" }[p];
+      return `<tr data-p="${esc(p)}"><td>${esc(p)}</td><td class="r">${x.n}</td><td class="r">${x.left}</td><td class="r">${x.wintered}</td><td class="r">${x.dead}</td><td>${rt}</td></tr>`; }).join("") + "</tbody>";
+  t.querySelectorAll("tr[data-p]").forEach(tr => tr.onclick = () => { setSp("stork"); S.pop = tr.dataset.p; document.getElementById("popSel").value = S.pop; refresh();
+    if (ready) { const as = SITE.animals.filter(a => a.pop === S.pop); const xs = as.flatMap(a => a.lon || []), ys = as.flatMap(a => a.lat || []); if (xs.length) map.fitBounds([[Math.min(...xs), Math.min(...ys)], [Math.max(...xs), Math.max(...ys)]], { padding: 40, duration: 900 }); }
+    document.getElementById("atlas").scrollIntoView({ behavior: "smooth", block: "start" }); });
+}
+function winChart() {
+  const box = document.getElementById("winChart"), D = SITE.winlat;
+  const pops = POPS.filter(p => D.some(d => d[0] === p));
+  resp(box, (W, sm) => { const lw = sm ? 128 : 170, rh = 30, top = 6, H = top + pops.length * rh + 30, svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Winter latitude of each stork by population" }, box);
+    const x = v => lw + (45 - v) / 85 * (W - lw - 14);
+    [40, 20, 0, -20, -35].forEach(v => { el("line", { x1: x(v), x2: x(v), y1: top, y2: top + pops.length * rh, stroke: css("--rule") }, svg); lbl(svg, x(v), H - 14, v === 0 ? "equator" : Math.abs(v) + "°" + (v > 0 ? "N" : "S"), "lab s m", "middle"); });
+    el("rect", { x: x(20), y: top, width: x(5) - x(20), height: pops.length * rh, fill: css("--red"), "fill-opacity": .06 }, svg); lbl(svg, (x(20) + x(5)) / 2, H - 1, "Sahel belt", "lab s m", "middle");
+    pops.forEach((p, i) => { const y = top + i * rh + rh / 2; lbl(svg, lw - 8, y + 4, p, "lab", "end");
+      D.filter(d => d[0] === p).forEach((d, j) => { const cx = x(d[1]), cy = y + ((j % 3) - 1) * 5;
+        const c = d[2] ? el("path", { d: `M${cx - 4} ${cy}h8M${cx} ${cy - 5}v10`, stroke: css("--fg"), "stroke-width": 2 }, svg) : el("circle", { cx, cy, r: 4.5, fill: css("--stork"), "fill-opacity": .85, stroke: css("--card") }, svg);
+        const hit = el("circle", { cx, cy, r: 8, fill: "transparent" }, svg);
+        hit.addEventListener("mousemove", e => showTip(`<b>${esc(d[3])}</b> · ${esc(p)}<br>winter latitude ${d[1].toFixed(1)}°${d[2] ? "<br>later found dead" : ""}`, e.clientX, e.clientY)); hit.addEventListener("mouseleave", hideTip);
+        hit.style.cursor = "pointer"; hit.addEventListener("click", () => selectBird("stork:" + d[3])); }); }); });
+}
+function seaChart() {
+  const box = document.getElementById("seaChart"), D = SITE.sea;
+  resp(box, (W, sm) => { const lw = sm ? 120 : 150, rh = 34, H = SPK.length * rh + 26, svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Share of flying over the sea by species" }, box);
+    const mx = 25, x = v => lw + v / mx * (W - lw - 50);
+    SPK.forEach((s, i) => { const y = i * rh; lbl(svg, lw - 8, y + rh / 2 + 4, SPN[s], "lab", "end");
+      el("rect", { x: lw, y: y + 6, width: Math.max(2, x(D[s]) - lw), height: rh - 12, fill: css("--" + s) }, svg); lbl(svg, x(D[s]) + 6, y + rh / 2 + 4, D[s].toFixed(D[s] < 1 ? 2 : 1) + "%", "lab b"); });
+    [0, 10, 20].forEach(v => lbl(svg, x(v), H - 4, v + "%", "lab s m", "middle")); });
+}
+function speedChart() {
+  const box = document.getElementById("speedChart"), D = SITE.migs;
+  resp(box, (W, sm) => { const lw = sm ? 120 : 150, rh = 46, H = SPK.length * rh + 34, svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Migration speed by species" }, box);
+    const mx = 400, x = v => lw + v / mx * (W - lw - 14);
+    [0, 100, 200, 300, 400].forEach(v => { el("line", { x1: x(v), x2: x(v), y1: 0, y2: SPK.length * rh, stroke: css("--rule") }, svg); lbl(svg, x(v), H - 16, v + " km/day", "lab s m", "middle"); });
+    lbl(svg, x(200), H - 1, "● autumn   ○ spring", "lab s m", "middle");
+    SPK.forEach((s, i) => { const y = i * rh + rh / 2; lbl(svg, lw - 8, y + 4, SPN[s], "lab", "end");
+      const ds = D.filter(d => d[0] === s); if (!ds.length) lbl(svg, lw + 4, y + 4, "too few well-covered migrations", "lab s m");
+      ds.forEach((d, j) => { const cy = y + ((j % 5) - 2) * 4; const c = el("circle", { cx: x(Math.min(mx, d[2])), cy, r: 5, fill: d[1] === "autumn" ? css("--" + s) : "none", stroke: css("--" + s), "stroke-width": 1.6, "fill-opacity": .8 }, svg);
+        c.addEventListener("mousemove", e => showTip(`<b>${esc(d[5])}</b> · ${SPN[s]}, ${d[1]}<br>${fmt(d[4])} km in ${d[3]} days, ${fmt(d[2])} km a day`, e.clientX, e.clientY)); c.addEventListener("mouseleave", hideTip); c.style.cursor = "pointer"; c.addEventListener("click", () => selectBird(s + ":" + d[5])); }); }); });
+}
+function yearChart() {
+  const box = document.getElementById("yearChart"), D = SITE.years;
+  resp(box, (W, sm) => { const sps = SPK.filter(s => D.some(d => d[0] === s)); const lw = sm ? 120 : 150, rh = 40, H = sps.length * rh + 26, svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Distance in a year" }, box);
+    const mx = 25000, x = v => lw + v / mx * (W - lw - 14);
+    [0, 5000, 10000, 15000, 20000, 25000].forEach(v => { el("line", { x1: x(v), x2: x(v), y1: 0, y2: sps.length * rh, stroke: css("--rule") }, svg); lbl(svg, x(v), H - 4, (v / 1000) + ",000 km", "lab s m", "middle"); });
+    sps.forEach((s, i) => { const y = i * rh + rh / 2; lbl(svg, lw - 8, y + 4, SPN[s], "lab", "end");
+      D.filter(d => d[0] === s).forEach((d, j) => { const c = el("circle", { cx: x(d[1]), cy: y + ((j % 3) - 1) * 5, r: 5.5, fill: css("--" + s), "fill-opacity": .8, stroke: css("--card") }, svg);
+        c.addEventListener("mousemove", e => showTip(`<b>${esc(d[2])}</b> · ${SPN[s]}<br>${fmt(d[1])} km in its best-covered year`, e.clientX, e.clientY)); c.addEventListener("mouseleave", hideTip); c.style.cursor = "pointer"; c.addEventListener("click", () => selectBird(s + ":" + d[2])); }); }); });
+}
+
+/* ---------- start ---------- */
+(function spRow() {
+  const row = document.getElementById("spRow");
+  [["all", "All four"]].concat(SPK.map(s => [s, SPN[s]])).forEach(([k, t]) => { const b = document.createElement("button"); b.className = "btn"; b.dataset.sp = k;
+    if (k !== "all") b.appendChild(PenBirds.img(k, 24)); b.appendChild(document.createTextNode(t)); row.appendChild(b);
+    b.onclick = () => { if (S.sel) document.getElementById("allYear").click(); setSp(k); refresh(); }; });
+  document.getElementById("popSel").onchange = e => { S.pop = e.target.value; refresh(); };
+})();
+document.getElementById("theme").onclick = () => { const r = document.documentElement; r.dataset.theme = isDark() ? "light" : "dark"; redraws.forEach(f => f()); };
+Promise.all([fetch("data/site.json" + V).then(r => r.json()), fetch("data/tracks.json" + V).then(r => r.json())]).then(([s, t]) => {
+  SITE = s; TR = t; buildGroups(); setSp("all"); side(); legend(); popTable(); winChart(); seaChart(); speedChart(); yearChart(); startMap();
+}).catch(e => { console.warn(e); document.querySelector("#map .loading").textContent = "Could not load the tracks."; });
+</script>
+/*FULLSCREEN*/
+</body>
+</html>

@@ -1,0 +1,149 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\newfontfamily\headfont{Inter}[UprightFont=*-ExtraBold,BoldFont=*-ExtraBold,Extension=.otf,Path=/usr/share/fonts/opentype/inter/]
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{graphicx,booktabs,float,caption,array,xcolor,longtable}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage[round]{natbib}
+\usepackage{setspace}
+\setstretch{1.05}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\titleformat{\section}{\headfont\Large}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\headfont\large}{\thesubsection}{0.8em}{}
+\captionsetup{font=small,labelfont=bf}
+\urlstyle{same}
+\hypersetup{pdftitle={Where the Storks Go},pdfauthor={Tristan Hotham}}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries Where the Storks Go\par}
+\vspace{0.4em}
+{\large Routes, funnels, sea crossings, winter quarters and fates of four migratory bird species\\in four open tracking data sets\par}
+\vspace{1.2em}
+{\large Tristan Hotham\par}
+\vspace{0.3em}
+{\small Independent researcher\\
+ORCID: 0000-0003-4931-9349\\
+DOI: https://doi.org/10.5281/zenodo.24043676\par}
+\vspace{0.8em}
+2026
+\end{center}
+
+\begin{quote}
+\small
+\begin{center}\textbf{Abstract}\end{center}
+I combine four open (CC0) animal tracking data sets, cleaned in the same way, to compare the migrations of {{stork.n|int}} juvenile white storks \textit{Ciconia ciconia} from eight populations (GPS, 2013 to 2014), {{osprey.n|int}} North American ospreys \textit{Pandion haliaetus} (Argos, 1995 to 2002), {{cuckoo.n|int}} common cuckoos \textit{Cuculus canorus} from a displacement experiment (Argos and GPS, 2015 to 2020) and {{harrier.n|int}} western marsh harriers \textit{Circus aeruginosus} from Belgium (GPS, 2018 to 2022): {{total.daily|int}} daily positions in all. Storks of the western populations crossed into Africa at the Strait of Gibraltar ({{stork.west_gib|int}} of {{stork.west_left|int}} that left home) and those of the eastern populations by the Turkish straits ({{stork.east_straits|int}} of {{stork.east_left|int}}) and the Levant; none used the other's funnel. Measured as the share of distance between consecutive positions whose midpoint lies over open sea, storks flew {{sp.stork.sea_pct|f2}}\% of their distance over water, against {{sp.harrier.sea_pct|f1}}\% for marsh harriers, {{sp.cuckoo.sea_pct|f1}}\% for cuckoos and {{sp.osprey.sea_pct|f1}}\% for ospreys. Autumn migrations took a median {{migr.stork_autumn.days|int}} days for storks ({{migr.stork_autumn.km_per_day|int}} km a day), {{migr.harrier_autumn.days|int}} for harriers and {{migr.osprey_autumn.days|f1}} for ospreys ({{migr.osprey_autumn.km_per_day|int}} km a day). The best single day reached {{sp.harrier.max_day_km|int}} km for a marsh harrier. {{stork.dead|int}} of the {{stork.n|int}} young storks ({{stork.dead_pct|int}}\%) were confirmed dead within the year, {{stork.dead_before_leaving|int}} before they had left home; among those that left, {{stork.leave_tunisia_dead|int}} of {{stork.leave_tunisia_n|int}} Tunisian storks died, against {{stork.leave_east_dead|int}} of {{stork.leave_east_n|int}} on the eastern route. A marsh harrier returned to within {{harrier.lilla_max_shift|f1}} km of the same winter site in Senegal in three winters.
+
+\textbf{Keywords:} bird migration; animal tracking; white stork; osprey; common cuckoo; marsh harrier; flyways; Movebank; open data
+\end{quote}
+
+\section{Introduction}
+Long-distance migrants face the same problem with different bodies. White storks are heavy soaring birds that depend on thermals, which do not form over cold water; they are known to concentrate at the short sea crossings of the Strait of Gibraltar and the Bosporus and to split into western and eastern flyways around the Mediterranean \citep{flack2016}. Ospreys are flapping fliers that fish and can cross wide stretches of sea \citep{martell2001}; cuckoos are nocturnal migrants that cross the Mediterranean and the Sahara in long nonstop flights \citep{thorup2020}; marsh harriers soar and flap and fly over the desert by night.
+
+Satellite and GPS tags have made these journeys visible bird by bird, and the Movebank Data Repository and Zenodo publish some of the resulting data openly. This paper does not add new tracking: it takes four such data sets, cleans them in one consistent way and compares routes, funnels, sea crossings, speeds, winter quarters and fates across species. It accompanies an interactive, hand-inked animated map (\url{https://maps.tristanhotham.com/bird-migration/}).
+
+\section{Data}
+\textbf{White storks.} The MPIO white stork lifetime tracking data \citep{flackdata}: {{stork.n|int}} juveniles fitted with e-obs GPS and accelerometer tags in the nest in 2013, in eight populations (south-west Germany, Spain, Tunisia, Poland, Greece, Russia, Armenia and Uzbekistan) and one bird tagged in South Africa in late 2012. The tags recorded a fix every five minutes in daylight; the GPS file has {{data.stork.raw_rows|int}} rows. The reference data record which birds were confirmed dead. These data were collected for the comparison of migration costs across populations by \citet{flack2016} and contribute to \citet{kays2015}.
+
+\textbf{Ospreys.} Satellite (Argos) tracks of {{osprey.n|int}} adult and young ospreys tagged in the eastern, midwestern and western United States between 1995 and 2002 \citep{martelldata,martell2001}, {{data.osprey.raw_rows|int}} rows. The data package notes that data for late 1998 and early 1999 were lost.
+
+\textbf{Cuckoos.} Argos and Lotek GPS tracks of common cuckoos caught at Rybachy on the Curonian Spit \citep{thorupdata,thorup2020}. Some birds were released at Rybachy and others carried about {{cuckoo.displace_km|int}} km east to Kazan before release; {{cuckoo.control|int}} control and {{cuckoo.displaced|int}} displaced birds have usable positions.
+
+\textbf{Marsh harriers.} UvA-BiTS GPS tracks of western marsh harriers breeding near Antwerp, Belgium, 2018 to 2022 \citep{inbo}, {{data.harrier.raw_rows|int}} rows; the one common buzzard in the data set was left out. All four data sets are released under CC0. Coastlines, borders, lakes and towns are from Natural Earth \citep{naturalearth}.
+
+\section{Methods}
+\textbf{Cleaning.} Rows not marked visible, without coordinates or flagged as outliers (by Movebank's Douglas Argos filter \citep{douglas2012} or by the data owners) were removed. Argos positions were kept only in location classes 3, 2 and 1, with stated errors under about 1.5 km: {{data.osprey.good_class_pct|f1}}\% of the osprey rows. A position was dropped if reaching it from the previous kept position needed more than 120 km/h (150 km/h for cuckoos) over a distance of more than 5 km, repeated until no such position remained. GPS tracks were thinned to one position per ten minutes (for the sea crossings) and per hour, and every track to one position a day, the one nearest 12:00 UTC (for Argos, the best location class first).
+
+\textbf{Distances and speeds.} All distances are great-circle distances between positions and so lower bounds on the distance flown. A day's flight is the distance between consecutive daily positions 18 to 30 hours apart, scaled to 24 hours. The distance in a year is the sum of daily steps over the best-covered 365-day window of each bird followed for at least 330 days, with a position on at least 60\% of the days.
+
+\textbf{Migrations.} For each bird and year a summer anchor is the median daily position between 1 June and 31 July (or the tagging site for birds tagged in summer) and a winter anchor the median position between 1 December and 31 January (at least ten days with positions). An autumn migration runs from the last day within 100 km of the summer anchor to the first day within 200 km of the winter anchor, when the anchors are at least 500 km apart; a spring migration from the last day within 200 km of the winter anchor to the first day within 100 km of the next summer's anchor. Only migrations with a daily position on at least half the days and no gap over five days enter the speed comparisons.
+
+\textbf{Funnels.} A stork crossed the Strait of Gibraltar if a position in Iberia was followed by one in Morocco; the Turkish straits if a position in Thrace and the Balkans was followed by one in Anatolia; the Levant if it had any position in Israel, Sinai or western Jordan (29 to 33.5°N, 34 to 36.6°E). A stork that never went 300 km from its nest did not leave home.
+
+\textbf{Sea.} Land is the union of Natural Earth's 1:10m countries. The share over the sea is the distance between consecutive positions (at most an hour apart for the GPS species, {{sp.osprey.max_gap_h|int}} hours for ospreys and {{sp.cuckoo.max_gap_h|int}} for cuckoos) whose midpoint lies over the sea, as a share of all such distance. A crossing is a run of positions or sampled points over the sea between two on land; for the satellite tags it runs along the straight line between positions.
+
+\textbf{Winter quarters.} For each species the December and January daily positions (at most 40 per bird) were smoothed with a Gaussian kernel and the smallest areas holding 50\% and 90\% of the density drawn.
+
+\section{Results}
+\subsection{Flyways and funnels}
+{{TABLE_POPS}}
+Table~\ref{tab:pops} and Figure~\ref{fig:storks} show the stork populations. Of the {{stork.west_left|int}} storks from Germany and Spain that left home, {{stork.west_gib|int}} crossed at Gibraltar; the others wintered in Spain or France or died first. Of the {{stork.east_left|int}} from Poland, Greece and Moscow that left, {{stork.east_straits|int}} crossed the Turkish straits and {{stork.east_levant|int}} passed through the Levant. No stork used the other side's funnel. {{stork.tunisia_sahara|int}} Tunisian birds crossed the Sahara directly; the {{stork.armenia_left|int}} Armenian birds that left went south through Turkey, Iraq and Iran, and none of the Uzbek storks went more than {{stork.uzbek_max_km|int}} km from home. Figure~\ref{fig:flyways} shows the four species side by side.
+
+\begin{figure}[tbp]\centering\includegraphics[width=\textwidth]{f_flyways.png}
+\caption{Daily tracks of the four species (faint lines), with pen-drawn birds on sample autumn migrations and the winter quarters hatched (50\% of the December and January density; dashed: 90\%).}\label{fig:flyways}\end{figure}
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.92\textwidth]{f_storks.png}
+\caption{Young white storks by population, with the three funnels and the last positions of birds found dead (crosses).}\label{fig:storks}\end{figure}
+
+\subsection{Around the sea or across it}
+Storks flew {{sp.stork.sea_pct|f2}}\% of their distance over the sea ({{sp.stork.sea_km|int}} of {{sp.stork.flown_km|int}} km), and their longest run over water was {{sp.stork.longest_sea_km|int}} km (Figure~\ref{fig:sea}). Ospreys flew {{sp.osprey.sea_pct|f1}}\% over the sea, about {{compare.sea_ratio_osprey_stork|int}} times the storks' share; {{osprey.carib_n|int}} made crossings of 300 km or more, mostly over the Caribbean between the Greater Antilles and northern South America (median {{osprey.carib_median_km|int}} km). One osprey, KD, left Hispaniola, spent {{osprey.longest_h|int}} hours over the Caribbean and returned to Haiti after {{osprey.longest_km|int}} km. {{cuckoo.n_cross_med|int}} cuckoos have straight lines between positions from southern Europe across the Mediterranean, the longest about {{cuckoo.longest_sea_km|int}} km; one young cuckoo went from Poland to Chad, {{cuckoo.fast.0.km|int}} km, in {{cuckoo.fast.0.days|f1}} days. The harriers' longest crossing was {{sp.harrier.longest_sea_km|int}} km.
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.85\textwidth]{f_sea.png}
+\caption{Share of distance flown over the open sea, by species.}\label{fig:sea}\end{figure}
+
+\subsection{Speed and distance}
+{{TABLE_MIGR}}
+Table~\ref{tab:migr} and Figure~\ref{fig:speed} summarise the well-covered migrations. Stork autumn migrations covered a median {{migr.stork_autumn.path_km|int}} km in {{migr.stork_autumn.days|int}} days, {{migr.stork_autumn.km_per_day|int}} km a day including stops, with a detour of {{migr.stork_autumn.detour_pct|int}}\% over the straight line between anchors; ospreys went {{compare.osprey_vs_stork_speed|f1}} times as fast. Cuckoo tracks were too sparse for this measure. The best day of the median migrating stork was {{sp.stork.median_best_day_km|int}} km and the best of all {{sp.stork.max_day_km|int}} km; ospreys reached {{sp.osprey.max_day_km|int}} km and a marsh harrier {{sp.harrier.max_day_km|int}} km, from central Spain to Morocco with flight continuing after dark. Over a year, {{sp.stork.n_full_year|int}} storks covered a median {{sp.stork.median_full_year_km|int}} km between daily positions and at most {{sp.stork.best_year_km|int}} km; between hourly positions the stork tracks are {{stork.hourly_vs_daily_pct|int}}\% longer.
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.85\textwidth]{f_speed.png}
+\caption{Speed of each well-covered migration (distance between daily positions over days from departure to arrival).}\label{fig:speed}\end{figure}
+
+\subsection{Winter quarters}
+{{stork.regions.Sahel|int}} of the {{stork.wintered|int}} storks with a winter position spent December and January in the Sahel belt (5 to 20°N), {{stork.regions.East and southern Africa|int}} in East and southern Africa and {{stork.regions.Europe and Morocco|int}} in Europe and Morocco (Figure~\ref{fig:winter}). The farthest, {{stork.far_animal|raw}} from Moscow, reached {{stork.far_country|raw}}, {{stork.far_km|int}} km from its nest. Of {{osprey.n_south|int}} ospreys tracked south of 25°N, {{osprey.n_south_america|int}} reached South America; {{osprey.south_countries.Mexico|int}} went no farther than Mexico, {{osprey.mexico_by_pop.West|int}} of them from the western population. The two long-tracked harriers wintered at the same sites every year: Lilla's winter centres near Dakar in three winters lay within {{harrier.lilla_max_shift|f1}} km of each other, and Lillo's in Guinea {{harrier.birds.Lillo.winter_shift_km.0|f1}} km apart (Figure~\ref{fig:harriers}).
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.85\textwidth]{f_winter.png}
+\caption{Median December and January latitude of each stork, by population; crosses mark birds later found dead.}\label{fig:winter}\end{figure}
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.62\textwidth]{f_harriers.png}
+\caption{The migrations of two marsh harriers from Antwerp: autumn in red, spring in blue.}\label{fig:harriers}\end{figure}
+
+\subsection{Fates}
+{{stork.dead|int}} of the {{stork.n|int}} storks were confirmed dead ({{stork.dead_pct|int}}\%); {{stork.dead_before_leaving|int}} of them never went 300 km from home and {{stork.dead_by_1oct|int}} died before 1 October 2013 (Figure~\ref{fig:fates}). Among birds that left home, deaths were {{stork.leave_east_dead|int}} of {{stork.leave_east_n|int}} on the eastern route, {{stork.leave_west_dead|int}} of {{stork.leave_west_n|int}} on the western route and {{stork.leave_tunisia_dead|int}} of {{stork.leave_tunisia_n|int}} for Tunisian birds crossing the Sahara. These small numbers are descriptive only; \citet{flack2016} analyse the costs of the routes in detail. The osprey records note {{osprey.dead|int}} deaths, {{osprey.debris|int}} of them probably on floating debris at sea.
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.85\textwidth]{f_fates.png}
+\caption{Young storks by population: died before leaving home, died after leaving, and not known to have died.}\label{fig:fates}\end{figure}
+
+\subsection{The displaced cuckoos}
+Of the displaced cuckoos whose first 500 km from Kazan could be followed, {{cuckoo.disp_sw|int}} of {{cuckoo.disp_heading_n|int}} headed south-west (median bearing {{cuckoo.disp_heading_med|int}} degrees), against a median {{cuckoo.ctrl_heading_med|int}} degrees for {{cuckoo.ctrl_heading_n|int}} control birds (Figure~\ref{fig:cuckoos}). Tags were short-lived (median {{cuckoo.control_span|int}} and {{cuckoo.displaced_span|int}} days), so the end points are not known for most; \citet{thorup2020} give the full analysis.
+
+\begin{figure}[tbp]\centering\includegraphics[width=0.75\textwidth]{f_cuckoos.png}
+\caption{Cuckoos released at Rybachy (green) and after displacement to Kazan (red).}\label{fig:cuckoos}\end{figure}
+
+\section{Limitations}
+First, the samples are small and specific: one cohort of young storks in one year, ospreys of the late 1990s and three harriers; they describe these birds, not their populations. Second, satellite tags give a few positions a day with gaps of days, so osprey and cuckoo tracks are straight lines between sparse points; sea crossings and speeds are approximate for them and distances are lower bounds for all species. Third, the anchors and thresholds that define migrations, funnels and leaving home are choices; others would shift individual birds. Fourth, a tag that stops is not a dead bird: only deaths confirmed by the data owners are counted. Fifth, coastlines at 1:10m mislabel some positions on the shore as at sea. Finally, the cuckoo data come from an experiment, and the displaced birds' routes are not natural ones.
+
+\section{Conclusion}
+Put on one map, the four data sets show four ways of crossing the same barriers. The soaring storks treat the Mediterranean as a wall and squeeze through its narrowest gaps, and the young storks of Europe divide cleanly between Gibraltar and the Bosporus. Ospreys and cuckoos cross open sea, ospreys by day over the Caribbean and cuckoos by night over the Mediterranean and the Sahara. Harriers return year after year to the same few kilometres of West Africa. And the first year is costly: four young storks in ten did not survive it.
+
+\section*{Data and code availability}
+The interactive map is at \url{https://maps.tristanhotham.com/bird-migration/}. Data and code are at \url{https://github.com/Tristan-Hotham/bird-migration} and archived with this paper at https://doi.org/10.5281/zenodo.24043676. Derived data are released under CC BY 4.0 and code under the MIT licence; the tracking data are CC0.
+
+\section*{AI statement}
+I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.
+
+\begin{thebibliography}{12}
+\bibitem[Douglas et al.(2012)]{douglas2012} Douglas, D. C., Weinzierl, R., Davidson, S. C., Kays, R., Wikelski, M. and Bohrer, G. (2012) Moderating Argos location errors in animal tracking data. \textit{Methods in Ecology and Evolution} 3: 999 to 1007. \url{https://doi.org/10.1111/j.2041-210X.2012.00245.x}
+\bibitem[Flack et al.(2015)]{flackdata} Flack, A., Fiedler, W., Blas, J. et al. (2015) Data from: Migration costs of eight Eurasian white stork populations. Movebank Data Repository. CC0. \url{https://doi.org/10.5441/001/1.78152p3q}
+\bibitem[Flack et al.(2016)]{flack2016} Flack, A., Fiedler, W., Blas, J. et al. (2016) Costs of migratory decisions: a comparison across eight white stork populations. \textit{Science Advances} 2: e1500931. \url{https://doi.org/10.1126/sciadv.1500931}
+\bibitem[INBO(2023)]{inbo} Research Institute for Nature and Forest (INBO) (2023) MH\_ANTWERPEN: Western marsh harriers (\textit{Circus aeruginosus}, Accipitridae) breeding near Antwerp (Belgium). Zenodo, version 5. CC0. \url{https://doi.org/10.5281/zenodo.8238402}
+\bibitem[Kays et al.(2015)]{kays2015} Kays, R., Crofoot, M. C., Jetz, W. and Wikelski, M. (2015) Terrestrial animal tracking as an eye on life and planet. \textit{Science} 348: aaa2478. \url{https://doi.org/10.1126/science.aaa2478}
+\bibitem[Martell et al.(2001)]{martell2001} Martell, M. S., Henny, C. J., Nye, P. E. and Solensky, M. J. (2001) Fall migration routes, timing, and wintering sites of North American ospreys as determined by satellite telemetry. \textit{The Condor} 103: 715 to 724.
+\bibitem[Martell and Douglas(2019)]{martelldata} Martell, M. S. and Douglas, D. (2019) Data from: Fall migration routes, timing, and wintering sites of North American ospreys as determined by satellite telemetry. Movebank Data Repository. CC0. \url{https://doi.org/10.5441/001/1.sv6335t3}
+\bibitem[Natural Earth(2026)]{naturalearth} Natural Earth (2026) Admin 0 countries, lakes and populated places. Public domain. \url{https://www.naturalearthdata.com/}
+\bibitem[Thorup et al.(2020a)]{thorupdata} Thorup, K., Vega, M. L., Snell, K. R. S. et al. (2020) Data from: Flying on their own wings: young and adult cuckoos respond similarly to long-distance displacement during migration. Movebank Data Repository. CC0. \url{https://doi.org/10.5441/001/1.vk36vq82}
+\bibitem[Thorup et al.(2020b)]{thorup2020} Thorup, K., Vega, M. L., Snell, K. R. S. et al. (2020) Flying on their own wings: young and adult cuckoos respond similarly to long-distance displacement during migration. \textit{Scientific Reports}. \url{https://doi.org/10.1038/s41598-020-64230-x}
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{The young storks}
+{{TABLE_STORKS}}
+\end{document}
